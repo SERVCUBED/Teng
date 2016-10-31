@@ -1,0 +1,75 @@
+Compile order:
+*	For each page:
+		*	load page.use if exists (if not, default.use. If that not exists, fail)
+		*	Parse template file, loading page content from {{t page.asdf}} -> <pagename>.asdf -> default.asdf where exists
+				and {{t incfile.a}} -> all items under incfile group a
+		*	Minify output
+		*	Copy to <pagename>.format in output directory
+*	Copy all .project 'copy' values where exists
+
+.project
+	Required file
+	e.g.
+		# Output file format for pages
+		format:%n.html
+		ignore ^\.
+
+incfile
+	Optional file
+	Contains links to other content
+	Append 'nomin' to not automatically minify js/css file
+	e.g.:
+		js.nomin git jmin/jmin.min.js js/jmin.min.js
+
+templates/main
+	Main template file
+	Required file
+	e.g.
+		<!DOCTYPE html>
+		<html>
+			<head>
+				{{t incfile.js}}
+				{{t incfile.css}}
+				{{t page.title}}
+				{{t page.head}}
+			</head>
+			<body>
+				{{t template.menu}}
+				{{t page.body}} <-- 'body' is the element relating to the current page
+				<p>Compiled on: {{t t.datetimenow}}</p> <-- possibility for built-in functions
+			</body>
+		</html>
+
+templates/menu
+	Another template to show inclusion
+	e.g.
+		<ul>
+			{{t foreach page /.+/}} <-- regex included in foreach loop of all pages
+			<li class="{{t p.isactivepage selected}}" href="{{t a.p}}">{{t p.title}}</li>
+			{{t endforeach}}
+		</ul>
+
+pages/default.use
+	The template used for the default page
+	e.g.
+		main
+	
+pages/default.title
+	The {{t page.title}} object for the default page
+	e.g.
+		Page Title
+
+pages/default.body
+	The {{t page.body}} object for the default page
+	e.g.
+		<h1>This is the default content</h1>
+	
+pages/index.title
+	e.g.
+		Main Page
+		
+pages/index.body
+	The body content. Can contain all php/js/css
+	e.g.
+		<h1>This is the homepage!</h1>
+		<a href="{{t a.other}}">Other page</a>

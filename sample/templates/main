@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{{t incfile.js}}
+		{{t incfile.css}}
+		{{t page.title}}
+		{{t page.head}}
+	</head>
+	<body>
+		{{t page.body}} <-- 'body' is the element relating to the current page
+		<p>Compiled on: {{t t.datetimenow}}</p>
+	</body>
+</html>

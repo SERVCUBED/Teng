@@ -1,0 +1,9 @@
+C:\Users\mail\Documents\GitHub\template\template\gui\bin\Release\gui.exe.config
+C:\Users\mail\Documents\GitHub\template\template\gui\bin\Release\gui.exe
+C:\Users\mail\Documents\GitHub\template\template\gui\bin\Release\gui.pdb
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.csprojResolveAssemblyReference.cache
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.Form1.resources
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.Properties.Resources.resources
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.csproj.GenerateResource.Cache
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.exe
+C:\Users\mail\Documents\GitHub\template\template\gui\obj\Release\gui.pdb

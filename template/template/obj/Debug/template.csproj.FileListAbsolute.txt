@@ -1,0 +1,8 @@
+C:\Users\mail\Documents\GitHub\template\template\template\obj\Debug\template.csprojResolveAssemblyReference.cache
+C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\NUglify.dll
+C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\NUglify.xml
+C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\templategen.exe.config
+C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\templategen.exe
+C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\templategen.pdb
+C:\Users\mail\Documents\GitHub\template\template\template\obj\Debug\templategen.exe
+C:\Users\mail\Documents\GitHub\template\template\template\obj\Debug\templategen.pdb

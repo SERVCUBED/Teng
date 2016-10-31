@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{{t page.title}}
+		{{t page.head}}
+	</head>
+	<body>
+		{{t template.menu}}
+		{{t page.body}}
+	</body>
+</html>
