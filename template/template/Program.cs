@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using template;
 
 namespace templategen
 {
@@ -19,7 +18,9 @@ namespace templategen
                 string outputDirectory = workingDirectory + "output" + Path.DirectorySeparatorChar;
                 bool shouldCleanOutput = false;
                 bool shouldMinify = true;
+                bool useMultipleThreads = true;
                 string fileFormat = "%n.html";
+
                 foreach (var arg in args)
                 {
                     if (arg == "-generate" || arg == "-g" || arg == "-gen")
@@ -34,12 +35,14 @@ namespace templategen
                         shouldCleanOutput = true;
                     else if (arg == "-nominify")
                         shouldMinify = false;
+                    else if (arg == "-singlethread")
+                        useMultipleThreads = false;
                     else
                         Console.WriteLine("Invalid argument: " + arg);
                 }
 
                 Console.WriteLine("Starting template engine...");
-                var engine = new TemplateEngine(outputDirectory, workingDirectory, shouldMinify, fileFormat);
+                var engine = new TemplateEngine(outputDirectory, workingDirectory, shouldMinify, fileFormat, useMultipleThreads);
 
                 if (!engine.VerifyArgs())
                     return;
@@ -78,6 +81,7 @@ namespace templategen
             Console.WriteLine("    -format=<value>      Set the output file format. Default is %n.html");
             Console.WriteLine("    -clean               Clear the output directory before generation");
             Console.WriteLine("    -nominify            Do not minify the output files");
+            Console.WriteLine("    -singlethread        Disable multithreading. Use on single-core machines");
         }
     }
 }

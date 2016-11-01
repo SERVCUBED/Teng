@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUglify;
 
-namespace template
+namespace templategen
 {
-    partial class TemplateEngine
+    internal partial class TemplateEngine
     {
         private readonly string _outputDirectory;
         private readonly string _workingDirectory;
@@ -15,16 +15,18 @@ namespace template
         private readonly Dictionary<string, string> _templates = new Dictionary<string, string>(); // name, value
         private int _threadCnt = 0;
         private readonly bool _shouldMin;
+        private readonly bool _useMultipleThreads;
 
         private Dictionary<string, Dictionary<string, string>> _pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
 
-        public TemplateEngine(string outputdirectory, string workingDirectory, bool shouldMin1, string fileFormat)
+        public TemplateEngine(string outputdirectory, string workingDirectory, bool shouldMin1, string fileFormat, bool useMultipleThreads)
         {
             _outputDirectory = outputdirectory;
             _workingDirectory = workingDirectory;
             _shouldMin = shouldMin1;
             _fileFormat = fileFormat;
+            _useMultipleThreads = useMultipleThreads;
         }
 
         public bool VerifyArgs()
@@ -150,7 +152,6 @@ namespace template
 
             if (m.Groups[1].Value == "a")
                 return FormatOutputFilename(m.Groups[2].Value);
-            // TODO: incfile
 
             if (m.Groups[1].Value == "template" && _templates.ContainsKey(m.Groups[2].Value))
                 return ParseTemplateData(_templates[m.Groups[2].Value], pageName);
@@ -242,8 +243,21 @@ namespace template
             }
 
             _threadCnt++;
-            func.Invoke();
-            _threadCnt--;
+            if (_useMultipleThreads)
+            {
+                var f = func;
+                var t = new Thread(() =>
+                {
+                    f.Invoke();
+                    _threadCnt--;
+                });
+                t.Start();
+            }
+            else
+            {
+                func.Invoke();
+                _threadCnt--;
+            }
         }
 
         public void Generate()

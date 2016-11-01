@@ -6,3 +6,11 @@ C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\templategen.
 C:\Users\mail\Documents\GitHub\template\template\template\bin\Debug\templategen.pdb
 C:\Users\mail\Documents\GitHub\template\template\template\obj\Debug\templategen.exe
 C:\Users\mail\Documents\GitHub\template\template\template\obj\Debug\templategen.pdb
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\bin\Debug\templategen.exe.config
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\obj\Debug\templategen.exe
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\obj\Debug\templategen.pdb
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\bin\Debug\templategen.exe
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\bin\Debug\templategen.pdb
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\bin\Debug\NUglify.dll
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\bin\Debug\NUglify.xml
+C:\Users\Ben\Documents\GitHub\TemplateEngine\template\template\obj\Debug\template.csprojResolveAssemblyReference.cache

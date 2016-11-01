@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace template
+namespace templategen
 {
-    partial class TemplateEngine
+    internal partial class TemplateEngine
     {
         private string ParseMenuForeach(string templateData, string pageName)
         {
