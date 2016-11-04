@@ -9,10 +9,22 @@ namespace gui
     {
         private Process _p;
 
-        public Form1()
+        public Form1(string filePath)
         {
             InitializeComponent();
 
+            if (filePath == null || !File.Exists(filePath))
+            {
+                LoadDefaults();
+            }
+            else
+            {
+                LoadFile(filePath);
+            }
+        }
+
+        private void LoadDefaults()
+        {
             var currentDir = Directory.GetCurrentDirectory();
             workingDirectoryTxt.Text = currentDir;
             outputDirectoryTxt.Text = currentDir + Path.DirectorySeparatorChar + "output";
@@ -23,20 +35,36 @@ namespace gui
                 exeDirectoryTxt.Text = guessedExePath;
                 openFileDialog1.FileName = guessedExePath;
             }
+        }
 
-            //var filePath = currentDir + Path.DirectorySeparatorChar + ".project";
-            //if (File.Exists(filePath))
-            //{
-            //    var contents = File.ReadAllText(filePath);
-            //    var split = contents.Split('\n');
-            //    if (split.Length >= 8)
-            //    {
-            //        outputDirectoryTxt.Text = workingDirectoryTxt + split[0];
-            //        generateChk.Checked = split[1] == "True";
-            //        cleanOutputChk.Checked = split[2] == "True";
-            //    }
-            //}
+        private void LoadFile(string filePath)
+        {
+            try
+            {
+                var contents = File.ReadAllText(filePath);
+                var split = contents.Split('\n');
+                if (split.Length >= 5)
+                {
+                    workingDirectoryTxt.Text = filePath.Substring(0, filePath.LastIndexOf(Path.DirectorySeparatorChar));
 
+                    var path = split[0].Replace('\r', '\\');
+                    if (Path.IsPathRooted(path))
+                        outputDirectoryTxt.Text = path;
+                    else
+                        outputDirectoryTxt.Text = workingDirectoryTxt.Text.AddDirectorySeparatorChar() + path;
+                    generateChk.Checked = split[1].Contains("True");
+                    cleanOutputChk.Checked = split[2].Contains("True");
+                    minifyOutputChk.Checked = split[3].Contains("True");
+                    fileFormatChk.Checked = split[4].Contains("null"); // TODO: FIX
+                    fileFormatTxt.Text = fileFormatChk.Checked ? split[4] : "%n.html";
+                }
+                else
+                    LoadDefaults();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error when loading file: " + ex.Message + Environment.NewLine + ex.StackTrace);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
