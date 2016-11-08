@@ -25,10 +25,13 @@ namespace templategen
                 {
                     if (arg == "-generate" || arg == "-g" || arg == "-gen")
                         shouldGen = true;
-                    else if (arg.StartsWith("-output="))
-                        outputDirectory = arg.Substring(8);
                     else if (arg.StartsWith("-dir="))
-                        workingDirectory = arg.Substring(5);
+                    {
+                        workingDirectory = arg.Substring(5).AddDirectorySeparatorChar();
+                        outputDirectory = workingDirectory + "output" + Path.DirectorySeparatorChar;
+                    }
+                    else if (arg.StartsWith("-output="))
+                        outputDirectory = arg.Substring(8).AddDirectorySeparatorChar();
                     else if (arg.StartsWith("-format="))
                         fileFormat = arg.Substring(8);
                     else if (arg == "-clean")
@@ -82,6 +85,16 @@ namespace templategen
             Console.WriteLine("    -clean               Clear the output directory before generation");
             Console.WriteLine("    -nominify            Do not minify the output files");
             Console.WriteLine("    -singlethread        Disable multithreading. Use on single-core machines");
+        }
+    }
+
+    public static class Extensions
+    {
+        public static string AddDirectorySeparatorChar(this string path)
+        {
+            if (path.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                return path;
+            return path + Path.DirectorySeparatorChar;
         }
     }
 }
