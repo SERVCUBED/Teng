@@ -1,6 +1,0 @@
-dir output:output
-# Output file format for pages
-format:%n.html
-copydir img:img
-copydir js:js
-copydir css:css
