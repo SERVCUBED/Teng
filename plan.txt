@@ -7,6 +7,15 @@ Compile order:
 		*	Copy to <pagename>.format in output directory
 *	Copy all .project 'copy' values where exists
 
+project.templateproject
+	Optional file. Launched via gui
+	e.g.
+		C:\OutputDirectory or relative to working
+		Generate?
+		Clean?
+		Minify?
+		Format?
+
 .project
 	Required file
 	e.g.
