@@ -40,6 +40,34 @@ namespace templategen
                         shouldMinify = false;
                     else if (arg == "-singlethread")
                         useMultipleThreads = false;
+                    else if (File.Exists(arg))
+                    {
+                        try
+                        {
+                            var contents = File.ReadAllText(arg);
+                            var split = contents.Split('\n');
+                            if (split.Length >= 5)
+                            {
+                                workingDirectory = arg.Substring(0, arg.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+
+                                var path = split[0].Replace('\r', '\\');
+                                if (Path.IsPathRooted(path))
+                                    outputDirectory = path;
+                                else
+                                    outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path;
+                                shouldGen = split[1].Contains("True");
+                                shouldCleanOutput = split[2].Contains("True");
+                                shouldMinify = split[3].Contains("True");
+                                fileFormat = split[4].Contains("null") ? "%n.html" : split[4];
+                            }
+                            else
+                                Console.WriteLine("Entries missing from file. Ignoring file.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(@"Error when loading file: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                        }
+                    }
                     else
                         Console.WriteLine("Invalid argument: " + arg);
                 }
@@ -85,6 +113,7 @@ namespace templategen
             Console.WriteLine("    -clean               Clear the output directory before generation");
             Console.WriteLine("    -nominify            Do not minify the output files");
             Console.WriteLine("    -singlethread        Disable multithreading. Use on single-core machines");
+            Console.WriteLine("    <filename>           Loads values from a project file. Use other values after to overwrite ones in this file.");
         }
     }
 

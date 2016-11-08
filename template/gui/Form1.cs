@@ -49,13 +49,13 @@ namespace gui
 
                     var path = split[0].Replace('\r', '\\');
                     if (Path.IsPathRooted(path))
-                        outputDirectoryTxt.Text = path;
+                        outputDirectoryTxt.Text = path.AddDirectorySeparatorChar();
                     else
-                        outputDirectoryTxt.Text = workingDirectoryTxt.Text.AddDirectorySeparatorChar() + path;
+                        outputDirectoryTxt.Text = workingDirectoryTxt.Text.AddDirectorySeparatorChar() + path.AddDirectorySeparatorChar();
                     generateChk.Checked = split[1].Contains("True");
                     cleanOutputChk.Checked = split[2].Contains("True");
                     minifyOutputChk.Checked = split[3].Contains("True");
-                    fileFormatChk.Checked = split[4].Contains("null"); // TODO: FIX
+                    fileFormatChk.Checked = split[4].Contains("null");
                     fileFormatTxt.Text = fileFormatChk.Checked ? split[4] : "%n.html";
                 }
                 else

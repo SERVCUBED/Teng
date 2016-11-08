@@ -5,3 +5,4 @@ C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\NUglify.dl
 C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\NUglify.xml
 C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\templategen.exe
 C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\templategen.pdb
+C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\template.csprojResolveAssemblyReference.cache
