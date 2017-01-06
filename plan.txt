@@ -43,7 +43,7 @@ templates/main
 				{{t page.head}}
 			</head>
 			<body>
-				{{t template.menu}}
+				{{t template.menu}} <-- load the 'menu' template
 				{{t page.body}} <-- 'body' is the element relating to the current page
 				{{t mdpage.body}} <-- same as above but processes in markdown instead
 				<p>Compiled on: {{t t.datetimenow}}</p> <-- possibility for built-in functions
@@ -55,7 +55,8 @@ templates/menu
 	e.g.
 		<ul>
 			{{t foreach page /.+/}} <-- regex included in foreach loop of all pages
-			<li class="{{t p.isactivepage selected}}" href="{{t a.p}}">{{t p.title}}</li>
+			<li class="{{t p.isactivepage selected}}" href="{{t a.p}}">{{t p.title}}</li> <-- use p.asdf for 
+				the <pagename>.asdf of current page in foreach loop, unlike page.asdf for the current page
 			{{t endforeach}}
 		</ul>
 

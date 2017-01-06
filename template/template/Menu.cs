@@ -28,13 +28,13 @@ namespace templategen
 
         private string ParseForeachTemplateData(string data, string pageName, string activePage)
         {
-            var regex = @"\{\{t (.)\.([a-z]+)(?: )*([a-zA-Z0-9_]+)*(?:\w)*\}\}";
+            var regex = @"\{\{t (.)\.([a-z]+)(?: )*([a-zA-Z0-9_]+)*(?: ([a-zA-Z0-9_/<>""= ]*))*\}\}";
             return Regex.Replace(data, regex, m =>
             {
                 if (m.Groups[1].Value == "p") // {{t p.
                 {
-                    if (m.Groups[2].Value == "isactivepage" && m.Groups.Count > 3) // {{t p.isactivepage *}} - Return * if currently the active page
-                        return (pageName == activePage) ? m.Groups[3].Value : String.Empty;
+                    if (m.Groups[2].Value == "isactivepage" && m.Groups.Count > 4) // {{t p.isactivepage *}} - Return * if currently the active page
+                        return (pageName == activePage) ? m.Groups[4].Value : String.Empty;
 
                     return GetPropertyValue(pageName, m.Groups[2].Value); // {{t p.title}} - Page title or any other property
                 }
