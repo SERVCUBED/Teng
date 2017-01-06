@@ -22,14 +22,15 @@
 ##Compile order:
 *	For each page:
 	*	Load page.use if exists (if not, default.use. If that not exists, fail)
-	*	Parse template file, loading page content from {{t page.asdf}} -> <pagename>.asdf -> default.asdf where exists
+	*	Parse template file, loading page content from {{t page.asdf}} -> \<pagename\>.asdf -> default.asdf where exists
 			and {{t incfile.a}} -> all items under incfile group a
 	*	Minify output
-	*	Copy to <pagename>.format in output directory
+	*	Copy to \<pagename\>.format in output directory
 *	Copy all .project 'copy' values where exists
 
 ##project.teng
-Optional file
+Optional file.
+
 e.g.
 
 	C:\OutputDirectory or relative to working
@@ -38,8 +39,9 @@ e.g.
 	Minify?
 	Format?
 
-##.project
-Required file
+##.project - **Not implemented yet.**
+Required file.
+
 e.g.
 
 	# Output file format for pages
@@ -55,8 +57,8 @@ e.g.:
 	js.nomin git jmin/jmin.min.js js/jmin.min.js
 
 ##templates/main
-Main template file
-Required file
+Main template file. Required file.
+
 e.g.
 
 	<!DOCTYPE html>
