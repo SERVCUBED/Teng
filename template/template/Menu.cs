@@ -28,7 +28,7 @@ namespace templategen
 
         private string ParseForeachTemplateData(string data, string pageName, string activePage)
         {
-            var regex = @"\{\{t (.)\.([a-z]+)(?: )*(?: ([a-zA-Z0-9_/<>""= ]*))*\}\}";
+            var regex = @"\{\{t (.)\.([a-z]+)(?: +([a-zA-Z0-9_/<>""= ]*))*\}\}";
             return Regex.Replace(data, regex, m =>
             {
                 if (m.Groups[1].Value == "p") // {{t p.
