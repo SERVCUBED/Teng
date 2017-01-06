@@ -1,5 +1,0 @@
-<ul>
-	{{t foreach page /.+/}}
-	<li class="{{t p.isactivepage selected}}"><a href="{{t a.p}}">{{t p.title}}</a></li>
-	{{t endforeach}}
-</ul>

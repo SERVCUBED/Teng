@@ -122,9 +122,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(13, 93);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(136, 13);
+            this.label3.Size = new System.Drawing.Size(95, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Templategen.exe Location:";
+            this.label3.Text = "teng.exe Location:";
             // 
             // generateChk
             // 
@@ -232,7 +232,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Template Engine GUI";
+            this.Text = "Teng Template Engine GUI";
             this.ResumeLayout(false);
             this.PerformLayout();
 

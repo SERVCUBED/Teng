@@ -7,8 +7,8 @@ Compile order:
 		*	Copy to <pagename>.format in output directory
 *	Copy all .project 'copy' values where exists
 
-project.templateproject
-	Optional file. Launched via gui
+project.teng
+	Optional file
 	e.g.
 		C:\OutputDirectory or relative to working
 		Generate?
@@ -24,7 +24,7 @@ project.templateproject
 		ignore ^\.
 
 incfile
-	Optional file
+	Optional file. Not implemented yet.
 	Contains links to other content
 	Append 'nomin' to not automatically minify js/css file
 	e.g.:
@@ -37,14 +37,15 @@ templates/main
 		<!DOCTYPE html>
 		<html>
 			<head>
-				{{t incfile.js}}
-				{{t incfile.css}}
-				{{t page.title}}
+				{{t incfile.js}} <-- not implemented yet
+				{{t incfile.css}} <-- not implemented yet
+				<title>{{t page.title}}</title>
 				{{t page.head}}
 			</head>
 			<body>
 				{{t template.menu}}
 				{{t page.body}} <-- 'body' is the element relating to the current page
+				{{t mdpage.body}} <-- same as above but processes in markdown instead
 				<p>Compiled on: {{t t.datetimenow}}</p> <-- possibility for built-in functions
 			</body>
 		</html>

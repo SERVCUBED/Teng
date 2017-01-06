@@ -8,7 +8,7 @@ namespace templategen
     {
         private static void Main(string[] args)
         {
-            Console.Title = "Template Engine";
+            Console.Title = "Teng Template Engine";
             if (args.Length == 0)
                 ShowHelp();
             else
@@ -66,6 +66,7 @@ namespace templategen
                         catch (Exception ex)
                         {
                             Console.WriteLine(@"Error when loading file: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                            return;
                         }
                     }
                     else

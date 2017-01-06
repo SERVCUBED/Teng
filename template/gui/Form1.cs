@@ -29,7 +29,7 @@ namespace gui
             workingDirectoryTxt.Text = currentDir;
             outputDirectoryTxt.Text = currentDir + Path.DirectorySeparatorChar + "output";
 
-            var guessedExePath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "templategen.exe";
+            var guessedExePath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "teng.exe";
             if (File.Exists(guessedExePath))
             {
                 exeDirectoryTxt.Text = guessedExePath;

@@ -143,12 +143,18 @@ namespace templategen
             return Regex.Replace(data, pattern, m => ParseTemplateRegex(m, pageName));
         }
 
+        private string ParseMarkdownData(string templateData) => templateData == String.Empty ? 
+            String.Empty : Markdig.Markdown.ToHtml(templateData);
+
         private string FormatOutputFilename(string name) => _fileFormat.Replace("%n", name);
 
         private string ParseTemplateRegex(Match m, string pageName)
         {
             if (m.Groups[1].Value == "page")
                 return ParseTemplateData(GetPropertyValue(pageName, m.Groups[2].Value), pageName);
+
+            if (m.Groups[1].Value == "pagemd")
+                return ParseMarkdownData(GetPropertyValue(pageName, m.Groups[2].Value));
 
             if (m.Groups[1].Value == "a")
                 return FormatOutputFilename(m.Groups[2].Value);
