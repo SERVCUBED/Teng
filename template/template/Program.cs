@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using TemplateEngine;
 
 namespace templategen
 {
@@ -102,22 +103,35 @@ namespace templategen
                 }
 
                 Console.WriteLine("Starting template engine...");
-                var engine = new TemplateEngine(outputDirectory, workingDirectory, shouldMinify, fileFormats, useMultipleThreads);
+                var engine = new Engine(outputDirectory, workingDirectory, shouldMinify, fileFormats, useMultipleThreads);
 
-                if (!engine.VerifyArgs())
+                var verifyResult = engine.VerifyArgs();
+                if (verifyResult != null)
+                {
+                    Console.WriteLine(verifyResult);
                     return;
+                }
 
                 if (shouldCleanOutput)
                 {
                     Console.WriteLine("Cleaning output directory...");
-                    engine.CleanOutput();
+                    var result = engine.CleanOutput();
+                    if (result != null)
+                    {
+                        Console.WriteLine(result);
+                        Environment.Exit(0);
+                    }
                     Console.WriteLine("Done!");
                 }
 
                 if (shouldGen)
                 {
                     Console.WriteLine("Generating...");
-                    engine.Generate();
+                    var result = engine.Generate();
+                    foreach (var item in result)
+                    {
+                        Console.WriteLine("> " + item);
+                    }
                     Console.WriteLine("Done!");
                 }
 #if DEBUG

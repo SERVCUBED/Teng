@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUglify;
 
-namespace templategen
+namespace TemplateEngine
 {
-    internal partial class TemplateEngine
+    public partial class Engine
     {
         private readonly string _outputDirectory;
         private readonly string _workingDirectory;
@@ -16,11 +16,12 @@ namespace templategen
         private readonly Dictionary<string, string> _templates = new Dictionary<string, string>(); // name, value
         private int _threadCnt = 0;
         private readonly bool _useMultipleThreads;
+        private List<string> _warnings = new List<string>();
 
         private readonly Dictionary<string, Dictionary<string, string>> _pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
 
-        public TemplateEngine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1, Dictionary<string, string> fileFormats, bool useMultipleThreads)
+        public Engine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1, Dictionary<string, string> fileFormats, bool useMultipleThreads)
         {
             _outputDirectory = outputdirectory;
             _workingDirectory = workingDirectory;
@@ -33,39 +34,45 @@ namespace templategen
                 _shouldMin.Add("default", true); // Add default item
         }
 
-        public bool VerifyArgs()
+        /// <summary>
+        /// Make sure all arguments are valid before generating
+        /// </summary>
+        /// <returns>Error message. Null on success</returns>
+        public string VerifyArgs()
         {
             foreach (var fileFormat in _fileFormats)
             {
                 if (!fileFormat.Value.Contains("%n"))
                 {
-                    Console.WriteLine("File format must contain %n (see usage)");
-                    return false;
+                    return "File format must contain %n (see usage)";
                 }
             }
 
             if (!Directory.Exists(_workingDirectory))
             {
-                Console.WriteLine("Working directory must exist");
-                return false;
+                return "Working directory must exist";
             }
 
-            return true;
+            return null;
         }
 
-        public void CleanOutput()
+        /// <summary>
+        /// Delete all files in the output directory
+        /// </summary>
+        /// <returns>Error message. Null on success</returns>
+        public string CleanOutput()
         {
             if (!Directory.Exists(_outputDirectory))
-                return;
+                return null;
             try
             {
                 Clean(_outputDirectory);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Unable to clean directory " + _outputDirectory + "\r\n" + ex.Message);
-                Environment.Exit(0);
+                return "Unable to clean directory " + _outputDirectory + "\r\n" + ex.Message;
             }
+            return null;
         }
 
         private void Clean(string directory)
@@ -92,7 +99,7 @@ namespace templategen
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Unable to read file: " + file + "\r\n" + ex.Message);
+                    _warnings.Add("Unable to read file: " + file + "\r\n" + ex.Message);
 #if DEBUG
                     throw;
 #endif
@@ -113,7 +120,7 @@ namespace templategen
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Unable to read file: " + file + "\r\n" + ex.Message);
+                    _warnings.Add("Unable to read file: " + file + "\r\n" + ex.Message);
 #if DEBUG
                     throw;
 #endif
@@ -133,10 +140,7 @@ namespace templategen
             if (_pages.ContainsKey("default") && _pages["default"].ContainsKey(propertyName))
                 return _pages["default"][propertyName];
 
-            Console.Write("> No value or default value for ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(pageName + "." + propertyName);
-            Console.ForegroundColor = ConsoleColor.White;
+            _warnings.Add("No value or default value for " + pageName + "." + propertyName);
             return String.Empty;
         }
 
@@ -150,7 +154,7 @@ namespace templategen
             return Regex.Replace(data, pattern, m => ParseTemplateRegex(m, pageName));
         }
 
-        private string ParseMarkdownData(string templateData) => templateData == String.Empty ? 
+        private string ParseMarkdownData(string templateData) => templateData == String.Empty ?
             String.Empty : Markdig.Markdown.ToHtml(templateData);
 
         private bool ShouldMin(string pageName)
@@ -165,7 +169,7 @@ namespace templategen
         {
             var templateName = GetPropertyValue(name, "use");
 
-            string format = _fileFormats.ContainsKey(templateName) ? 
+            string format = _fileFormats.ContainsKey(templateName) ?
                 _fileFormats[templateName] : _fileFormats["default"]; // Always contains "default" value
 
             return format.Replace("%n", name);
@@ -185,14 +189,7 @@ namespace templategen
             if (m.Groups[1].Value == "template" && _templates.ContainsKey(m.Groups[2].Value))
                 return ParseTemplateData(_templates[m.Groups[2].Value], pageName);
 
-            Console.Write("> Invalid property name ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(m.Groups[1].Value + "." + m.Groups[2].Value);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" in page ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(pageName);
-            Console.ForegroundColor = ConsoleColor.White;
+            _warnings.Add("Invalid property name " + m.Groups[1].Value + "." + m.Groups[2].Value);
             return String.Empty;
         }
 
@@ -210,7 +207,7 @@ namespace templategen
             }
             catch (Exception ex)
             {
-                Console.WriteLine("> Unable to write page: " + pageName + "\r\n" + ex.Message);
+                _warnings.Add("Unable to write page: " + pageName + "\r\n" + ex.Message);
 #if DEBUG
                 throw;
 #endif
@@ -228,26 +225,26 @@ namespace templategen
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Js(contents).ToString();
-                        File.WriteAllText(MakeRelativeToOutputFromStaticDirctory(file), contents);
+                        File.WriteAllText(MakeRelativeToOutputFromStaticDirectory(file), contents);
                     }
                     else if (shouldMin && file.EndsWith(".css"))
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Css(contents).ToString();
-                        File.WriteAllText(MakeRelativeToOutputFromStaticDirctory(file), contents);
+                        File.WriteAllText(MakeRelativeToOutputFromStaticDirectory(file), contents);
                     }
                     else if (shouldMin && file.EndsWith(".html"))
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Html(contents).ToString();
-                        File.WriteAllText(MakeRelativeToOutputFromStaticDirctory(file), contents);
+                        File.WriteAllText(MakeRelativeToOutputFromStaticDirectory(file), contents);
                     }
                     else
-                        File.Copy(file, MakeRelativeToOutputFromStaticDirctory(file), true);
+                        File.Copy(file, MakeRelativeToOutputFromStaticDirectory(file), true);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Unable to copy static file " + file + "\r\n" + ex.Message);
+                    _warnings.Add("Unable to copy static file " + file + "\r\n" + ex.Message);
 #if DEBUG
                     throw;
 #endif
@@ -256,21 +253,19 @@ namespace templategen
 
             foreach (var directory in Directory.GetDirectories(directoryPath))
             {
-                if (!Directory.Exists(MakeRelativeToOutputFromStaticDirctory(directory)))
-                    Directory.CreateDirectory(MakeRelativeToOutputFromStaticDirctory(directory));
+                if (!Directory.Exists(MakeRelativeToOutputFromStaticDirectory(directory)))
+                    Directory.CreateDirectory(MakeRelativeToOutputFromStaticDirectory(directory));
                 RecursiveCopyStaticFiles(directory);
             }
         }
 
-        private string MakeRelativeToOutputFromStaticDirctory(string p)
+        private string MakeRelativeToOutputFromStaticDirectory(string p)
             => p.Replace(_workingDirectory + "static" + Path.DirectorySeparatorChar, _outputDirectory);
 
         private void StartSafeThread(Func<bool> func)
         {
             while (_threadCnt > 10) // Max 10 threads
-            {
                 Thread.Sleep(1);
-            }
 
             _threadCnt++;
             if (_useMultipleThreads)
@@ -290,10 +285,8 @@ namespace templategen
             }
         }
 
-        public void Generate()
+        public List<string> Generate()
         {
-            // Read .project file
-
             // Check for incfile file
 
             // Load files into arrays
@@ -326,15 +319,7 @@ namespace templategen
                 Thread.Sleep(10);
             }
 
-            /*
-             * *	For each page:
-		     *          *	load page.use if exists (if not, default.use. If that not exists, fail)
-		     *          *	Parse template file, loading page content from {{t page.asdf}} -> <pagename>.asdf -> default.asdf where exists
-			 *              and {{t incfile.a}} -> all items under incfile group a
-		     *          *	Minify output
-		     *          *	Copy to <pagename>.format in output directory
-             * *	Copy all .project 'copy' values where exists
-             */
+            return _warnings;
         }
     }
 }

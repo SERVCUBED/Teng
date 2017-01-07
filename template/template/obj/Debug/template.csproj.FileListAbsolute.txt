@@ -27,3 +27,5 @@ C:\Users\mail\Documents\GitHub\Teng\template\template\bin\Debug\NUglify.xml
 C:\Users\mail\Documents\GitHub\Teng\template\template\obj\Debug\template.csprojResolveAssemblyReference.cache
 C:\Users\mail\Documents\GitHub\Teng\template\template\obj\Debug\teng.exe
 C:\Users\mail\Documents\GitHub\Teng\template\template\obj\Debug\teng.pdb
+C:\Users\mail\Documents\GitHub\Teng\template\template\bin\Debug\TemplateEngine.dll
+C:\Users\mail\Documents\GitHub\Teng\template\template\bin\Debug\TemplateEngine.pdb

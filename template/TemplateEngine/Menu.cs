@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace templategen
+namespace TemplateEngine
 {
-    internal partial class TemplateEngine
+    public partial class Engine
     {
         private string ParseMenuForeach(string templateData, string pageName)
         {
