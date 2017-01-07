@@ -13,11 +13,6 @@ namespace TemplateEngine
             return Regex.Replace(templateData, foreachpattern, m => ParseForeachTemplateRegex(m, pageName), RegexOptions.ECMAScript);
         }
 
-        private List<string> GetPageNamesMatchRegex(string regex)
-        {
-            return (from page in _pages where (page.Key != "default" && Regex.IsMatch(page.Key, regex)) select page.Key).ToList();
-        }
-
         private string ParseForeachTemplateRegex(Match m, string pageName)
         {
             var pages = GetPageNamesMatchRegex(m.Groups[1].Value);
@@ -25,6 +20,14 @@ namespace TemplateEngine
 
             return o;
         }
+
+        /// <summary>
+        /// Gets a list of all page names matching an input Regex.
+        /// </summary>
+        /// <param name="regex">The Regex to match to.</param>
+        /// <returns>A list of all matching pages.</returns>
+        public List<string> GetPageNamesMatchRegex(string regex) =>
+            (from page in Pages where (page.Key != "default" && Regex.IsMatch(page.Key, regex)) select page.Key).ToList();
 
         private string ParseForeachTemplateData(string data, string pageName, string activePage)
         {

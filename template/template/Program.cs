@@ -82,16 +82,20 @@ namespace templategen
                         foreach (var line in lines)
                         {
                             var items = line.Split(':');
-                            if (items.Length >= 2)
-                            {
-                                var name = StripNewlineChars(items[0]);
-                                fileFormats.Add(name, items[1]);
 
-                                if (items.Length > 2)
-                                    shouldMinify.Add(name, StripNewlineChars(items[2].ToLower()) != "nomin");
-                            }
-                            else
+                            if (items.Length < 2)
+                            {
                                 Console.WriteLine("Invalid line " + line + " in fileformats file. Ignoring.");
+                                continue;
+                            }
+
+                            for (int i = 1; i < items.Length; i++)
+                            {
+                                if (StripNewlineChars(items[i]).Trim() == "nomin")
+                                    shouldMinify.Add(items[0], false);
+                                else
+                                    fileFormats.Add(items[0], StripNewlineChars(items[i]).Trim());
+                            }
                         }
                     }
                     catch (Exception ex)

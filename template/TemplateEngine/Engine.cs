@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUglify;
@@ -11,27 +13,30 @@ namespace TemplateEngine
     {
         private readonly string _outputDirectory;
         private readonly string _workingDirectory;
-        private readonly Dictionary<string, string> _fileFormats;
-        private readonly Dictionary<string, bool> _shouldMin;
+        public readonly Dictionary<string, string> FileFormatsDictionary;
+        public readonly Dictionary<string, bool> ShouldMinDictionary;
         private readonly Dictionary<string, string> _templates = new Dictionary<string, string>(); // name, value
         private int _threadCnt = 0;
         private readonly bool _useMultipleThreads;
         private List<string> _warnings = new List<string>();
 
-        private readonly Dictionary<string, Dictionary<string, string>> _pages =
+        public readonly Dictionary<string, Dictionary<string, string>> Pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
 
-        public Engine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1, Dictionary<string, string> fileFormats, bool useMultipleThreads)
+        public Engine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1,
+            Dictionary<string, string> fileFormatsDictionary, bool useMultipleThreads)
         {
             _outputDirectory = outputdirectory;
             _workingDirectory = workingDirectory;
-            _shouldMin = shouldMin1;
+            ShouldMinDictionary = shouldMin1;
             _useMultipleThreads = useMultipleThreads;
-            _fileFormats = fileFormats;
-            if (!_fileFormats.ContainsKey("default"))
-                _fileFormats.Add("default", "%n.html"); // Add default item
-            if (!_shouldMin.ContainsKey("default"))
-                _shouldMin.Add("default", true); // Add default item
+            FileFormatsDictionary = fileFormatsDictionary;
+            if (!FileFormatsDictionary.ContainsKey("default"))
+                FileFormatsDictionary.Add("default", "%n.html"); // Add default item
+            if (!ShouldMinDictionary.ContainsKey("default"))
+                ShouldMinDictionary.Add("default", true); // Add default item
+
+            GetFiles();
         }
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace TemplateEngine
         /// <returns>Error message. Null on success</returns>
         public string VerifyArgs()
         {
-            foreach (var fileFormat in _fileFormats)
+            foreach (var fileFormat in FileFormatsDictionary)
             {
                 if (!fileFormat.Value.Contains("%n"))
                 {
@@ -88,7 +93,7 @@ namespace TemplateEngine
             Directory.Delete(directory);
         }
 
-        private void GetFiles()
+        public void GetFiles()
         {
             foreach (var file in Directory.GetFiles(_workingDirectory + "templates"))
             {
@@ -113,10 +118,10 @@ namespace TemplateEngine
                     if (n.Length < 2)
                         continue;
 
-                    if (!_pages.ContainsKey(n[0].ToLower()))
-                        _pages.Add(n[0].ToLower(), new Dictionary<string, string>());
+                    if (!Pages.ContainsKey(n[0].ToLower()))
+                        Pages.Add(n[0].ToLower(), new Dictionary<string, string>());
 
-                    _pages[n[0].ToLower()].Add(n[1].ToLower(), File.ReadAllText(file));
+                    Pages[n[0].ToLower()].Add(n[1].ToLower(), File.ReadAllText(file));
                 }
                 catch (Exception ex)
                 {
@@ -128,17 +133,17 @@ namespace TemplateEngine
             }
         }
 
-        private string GetPropertyValue(string pageName, string propertyName)
+        public string GetPropertyValue(string pageName, string propertyName)
         {
             // Make case insensitive
             pageName = pageName.ToLower();
             propertyName = propertyName.ToLower();
 
-            if (_pages.ContainsKey(pageName) && _pages[pageName].ContainsKey(propertyName))
-                return _pages[pageName][propertyName];
+            if (Pages.ContainsKey(pageName) && Pages[pageName].ContainsKey(propertyName))
+                return Pages[pageName][propertyName];
 
-            if (_pages.ContainsKey("default") && _pages["default"].ContainsKey(propertyName))
-                return _pages["default"][propertyName];
+            if (Pages.ContainsKey("default") && Pages["default"].ContainsKey(propertyName))
+                return Pages["default"][propertyName];
 
             _warnings.Add("No value or default value for " + pageName + "." + propertyName);
             return String.Empty;
@@ -154,23 +159,26 @@ namespace TemplateEngine
             return Regex.Replace(data, pattern, m => ParseTemplateRegex(m, pageName));
         }
 
-        private string ParseMarkdownData(string templateData) => templateData == String.Empty ?
-            String.Empty : Markdig.Markdown.ToHtml(templateData);
+        private string ParseMarkdownData(string templateData) => templateData == String.Empty
+            ? String.Empty
+            : Markdig.Markdown.ToHtml(templateData);
 
-        private bool ShouldMin(string pageName)
+        private bool ShouldMinPage(string pageName)
         {
             var templateName = GetPropertyValue(pageName, "use");
 
-            return _shouldMin.ContainsKey(templateName) ?
-                _shouldMin[templateName] : _shouldMin["default"]; // Always contains "default" value
+            return ShouldMinDictionary.ContainsKey(templateName)
+                ? ShouldMinDictionary[templateName]
+                : ShouldMinDictionary["default"]; // Always contains "default" value
         }
 
         private string FormatOutputFilename(string name)
         {
             var templateName = GetPropertyValue(name, "use");
 
-            string format = _fileFormats.ContainsKey(templateName) ?
-                _fileFormats[templateName] : _fileFormats["default"]; // Always contains "default" value
+            string format = FileFormatsDictionary.ContainsKey(templateName)
+                ? FileFormatsDictionary[templateName]
+                : FileFormatsDictionary["default"]; // Always contains "default" value
 
             return format.Replace("%n", name);
         }
@@ -193,14 +201,14 @@ namespace TemplateEngine
             return String.Empty;
         }
 
-        private void ParsePageAndSave(string pageName)
+        public void ParsePageAndSave(string pageName)
         {
             var template = GetPropertyValue(pageName, "use");
             var content = ParseTemplateData(_templates[template], pageName);
             try
             {
                 // Minify output
-                if (ShouldMin(pageName))
+                if (ShouldMinPage(pageName))
                     content = Uglify.Html(content).ToString();
 
                 File.WriteAllText(_outputDirectory + FormatOutputFilename(pageName), content);
@@ -214,13 +222,123 @@ namespace TemplateEngine
             }
         }
 
+        /// <summary>
+        /// Save a page and all its parts to the filesystem.
+        /// </summary>
+        /// <param name="pageName">The name of the page to save.</param>
+        /// <returns>A list of all warnings.</returns>
+        public List<string> SavePage(string pageName)
+        {
+            _warnings = new List<string>();
+            if (!Pages.ContainsKey(pageName))
+                throw new KeyNotFoundException($"The page {pageName} could not be found.");
+            var pageItems = Pages[pageName];
+            var pagePath = $"{_workingDirectory}pages{Path.DirectorySeparatorChar}{pageName}";
+            foreach (var pageItem in pageItems)
+            {
+                var path = pagePath + pageItem.Key;
+                try
+                {
+                    File.WriteAllText(path, pageItem.Value);
+                }
+                catch (Exception ex)
+                {
+                    _warnings.Add($"Unable to save page item: {pageName}.{pageItem.Key}\r\n{ex.Message}");
+#if DEBUG
+                    throw;
+#endif
+                }
+            }
+            return _warnings;
+        }
+
+        /// <summary>
+        /// Saves the file minify data to the fileformats file.
+        /// </summary>
+        public void SaveFileFormatMinifyData()
+        {
+            var lines = new Dictionary<string, string>();
+
+            foreach (var format in FileFormatsDictionary)
+            {
+                // Don't save default value.
+                if (format.Key == "default" && format.Value == "%n.html")
+                    continue;
+
+                if (lines.ContainsKey(format.Key))
+                    lines[format.Key] = ":" + format.Value;
+                else
+                    lines.Add(format.Key, ":" + format.Value);
+            }
+
+            foreach (var b in ShouldMinDictionary)
+            {
+                if (b.Value)
+                    continue;
+
+                if (lines.ContainsKey(b.Key) && b.Value == false)
+                    lines[b.Key] = ":nomin";
+                else
+                    lines.Add(b.Key, ":nomin");
+            }
+        }
+
+        /// <summary>
+        /// Save all the template contents to the file system.
+        /// </summary>
+        /// <returns>A list of all warnings.</returns>
+        public List<string> SaveTemplates()
+        {
+            _warnings = new List<string>();
+            var templateDir = $"{_workingDirectory}{Path.DirectorySeparatorChar}templates{Path.DirectorySeparatorChar}";
+
+            foreach (var template in _templates)
+            {
+                try
+                {
+                    File.WriteAllText(templateDir + template.Key, template.Value);
+                }
+                catch (Exception ex)
+                {
+                    _warnings.Add("Unable to save template file " + template.Key + "\r\n" + ex.Message);
+                }
+            }
+            return _warnings;
+        }
+
+        /// <summary>
+        /// Saves all template, page and fileformat files to the file system.
+        /// </summary>
+        /// <returns>A list of all warnings.</returns>
+        public List<string> SaveAllFiles()
+        {
+            var w = new List<string>();
+            w.AddRange(SaveTemplates());
+            foreach (var page in Pages)
+            {
+                w.AddRange(SavePage(page.Key));
+            }
+            SaveFileFormatMinifyData();
+
+            return w;
+        }
+
+        /// <summary>
+        /// Gets a dictionary of all pages using a specific template. Keys are the page name and values are a 
+        /// dictionary of all the page parts.
+        /// </summary>
+        /// <param name="templateName">The template name.</param>
+        /// <returns>A dictionary of all pages using a specific template.</returns>
+        public Dictionary<string, Dictionary<string, string>> GetPagesUsingTemplate(string templateName) =>
+            Pages.Where(p => GetPropertyValue(p.Key, "use") == templateName).ToDictionary(k => k.Key, v => v.Value);
+
         private void RecursiveCopyStaticFiles(string directoryPath)
         {
             foreach (var file in Directory.GetFiles(directoryPath))
             {
                 try
                 {
-                    var shouldMin = ShouldMin("default");
+                    var shouldMin = ShouldMinPage("default");
                     if (shouldMin && file.EndsWith(".js"))
                     {
                         var contents = File.ReadAllText(file);
@@ -287,14 +405,12 @@ namespace TemplateEngine
 
         public List<string> Generate()
         {
+            _warnings = new List<string>();
             // Check for incfile file
-
-            // Load files into arrays
-            GetFiles();
 
             // Parse and save (not default page)
             Directory.CreateDirectory(_outputDirectory);
-            foreach (var page in _pages)
+            foreach (var page in Pages)
             {
                 if (page.Key != "default")
                     StartSafeThread(() =>
