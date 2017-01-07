@@ -20,7 +20,7 @@ namespace templategen
                 string outputDirectory = workingDirectory + "output" + Path.DirectorySeparatorChar;
                 bool shouldCleanOutput = false;
                 bool useMultipleThreads = true;
-                Dictionary<string, bool> shouldMinify = new Dictionary<string, bool>();
+                List<string> noMinify = new List<string>();
                 Dictionary<string, string> fileFormats = new Dictionary<string, string>();
 
                 foreach (var arg in args)
@@ -84,15 +84,12 @@ namespace templategen
                             var items = line.Split(':');
 
                             if (items.Length < 2)
-                            {
-                                Console.WriteLine("Invalid line " + line + " in fileformats file. Ignoring.");
                                 continue;
-                            }
 
                             for (int i = 1; i < items.Length; i++)
                             {
                                 if (StripNewlineChars(items[i]).Trim() == "nomin")
-                                    shouldMinify.Add(items[0], false);
+                                    noMinify.Add(items[0]);
                                 else
                                     fileFormats.Add(items[0], StripNewlineChars(items[i]).Trim());
                             }
@@ -107,7 +104,7 @@ namespace templategen
                 }
 
                 Console.WriteLine("Starting template engine...");
-                var engine = new Engine(outputDirectory, workingDirectory, shouldMinify, fileFormats, useMultipleThreads);
+                var engine = new Engine(outputDirectory, workingDirectory, noMinify, fileFormats, useMultipleThreads);
 
                 var verifyResult = engine.VerifyArgs();
                 if (verifyResult != null)

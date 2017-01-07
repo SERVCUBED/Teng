@@ -25,3 +25,13 @@ C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.Properties.Resour
 C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.csproj.GenerateResource.Cache
 C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.exe
 C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.pdb
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\TemplateEngine.dll
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\NUglify.dll
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\Markdig.dll
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\TemplateEngine.pdb
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\NUglify.xml
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\Markdig.xml
+C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.InputBox.resources
+C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.TemplateFrm.resources
+C:\Users\mail\Documents\GitHub\Teng\template\gui\obj\Debug\gui.PartEditor.resources
+C:\Users\mail\Documents\GitHub\Teng\template\gui\bin\Debug\Associate GUI.bat

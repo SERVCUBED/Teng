@@ -14,8 +14,8 @@ namespace TemplateEngine
         private readonly string _outputDirectory;
         private readonly string _workingDirectory;
         public readonly Dictionary<string, string> FileFormatsDictionary;
-        public readonly Dictionary<string, bool> ShouldMinDictionary;
-        private readonly Dictionary<string, string> _templates = new Dictionary<string, string>(); // name, value
+        public readonly List<string> NoMinList;
+        public readonly Dictionary<string, string> Templates = new Dictionary<string, string>(); // name, value
         private int _threadCnt = 0;
         private readonly bool _useMultipleThreads;
         private List<string> _warnings = new List<string>();
@@ -23,18 +23,16 @@ namespace TemplateEngine
         public readonly Dictionary<string, Dictionary<string, string>> Pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
 
-        public Engine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1,
+        public Engine(string outputdirectory, string workingDirectory, List<string> noMin1,
             Dictionary<string, string> fileFormatsDictionary, bool useMultipleThreads)
         {
             _outputDirectory = outputdirectory;
             _workingDirectory = workingDirectory;
-            ShouldMinDictionary = shouldMin1;
+            NoMinList = noMin1;
             _useMultipleThreads = useMultipleThreads;
             FileFormatsDictionary = fileFormatsDictionary;
             if (!FileFormatsDictionary.ContainsKey("default"))
                 FileFormatsDictionary.Add("default", "%n.html"); // Add default item
-            if (!ShouldMinDictionary.ContainsKey("default"))
-                ShouldMinDictionary.Add("default", true); // Add default item
 
             GetFiles();
         }
@@ -99,7 +97,7 @@ namespace TemplateEngine
             {
                 try
                 {
-                    _templates.Add(file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1).ToLower(),
+                    Templates.Add(file.Substring(file.LastIndexOf(Path.DirectorySeparatorChar) + 1).ToLower(),
                         File.ReadAllText(file));
                 }
                 catch (Exception ex)
@@ -167,9 +165,7 @@ namespace TemplateEngine
         {
             var templateName = GetPropertyValue(pageName, "use");
 
-            return ShouldMinDictionary.ContainsKey(templateName)
-                ? ShouldMinDictionary[templateName]
-                : ShouldMinDictionary["default"]; // Always contains "default" value
+            return !NoMinList.Contains(templateName);
         }
 
         private string FormatOutputFilename(string name)
@@ -194,8 +190,8 @@ namespace TemplateEngine
             if (m.Groups[1].Value == "a")
                 return FormatOutputFilename(m.Groups[2].Value);
 
-            if (m.Groups[1].Value == "template" && _templates.ContainsKey(m.Groups[2].Value))
-                return ParseTemplateData(_templates[m.Groups[2].Value], pageName);
+            if (m.Groups[1].Value == "template" && Templates.ContainsKey(m.Groups[2].Value))
+                return ParseTemplateData(Templates[m.Groups[2].Value], pageName);
 
             _warnings.Add("Invalid property name " + m.Groups[1].Value + "." + m.Groups[2].Value);
             return String.Empty;
@@ -204,7 +200,7 @@ namespace TemplateEngine
         public void ParsePageAndSave(string pageName)
         {
             var template = GetPropertyValue(pageName, "use");
-            var content = ParseTemplateData(_templates[template], pageName);
+            var content = ParseTemplateData(Templates[template], pageName);
             try
             {
                 // Minify output
@@ -236,7 +232,7 @@ namespace TemplateEngine
             var pagePath = $"{_workingDirectory}pages{Path.DirectorySeparatorChar}{pageName}";
             foreach (var pageItem in pageItems)
             {
-                var path = pagePath + pageItem.Key;
+                var path = pagePath + "." + pageItem.Key;
                 try
                 {
                     File.WriteAllText(path, pageItem.Value);
@@ -271,16 +267,20 @@ namespace TemplateEngine
                     lines.Add(format.Key, ":" + format.Value);
             }
 
-            foreach (var b in ShouldMinDictionary)
+            foreach (var b in NoMinList)
             {
-                if (b.Value)
-                    continue;
-
-                if (lines.ContainsKey(b.Key) && b.Value == false)
-                    lines[b.Key] = ":nomin";
+                if (lines.ContainsKey(b))
+                    lines[b] += ":nomin";
                 else
-                    lines.Add(b.Key, ":nomin");
+                    lines.Add(b, ":nomin");
             }
+
+            string text = String.Empty;
+            foreach (var line in lines)
+            {
+                text += line.Key + line.Value + Environment.NewLine;
+            }
+            File.WriteAllText(_workingDirectory + "fileformats", text);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace TemplateEngine
             _warnings = new List<string>();
             var templateDir = $"{_workingDirectory}{Path.DirectorySeparatorChar}templates{Path.DirectorySeparatorChar}";
 
-            foreach (var template in _templates)
+            foreach (var template in Templates)
             {
                 try
                 {
@@ -323,6 +323,45 @@ namespace TemplateEngine
             return w;
         }
 
+        public void RemoveTemplateAndPages(string templateName)
+        {
+            if (!Templates.ContainsKey(templateName))
+                return;
+
+            List<string> toRemove = new List<string>();
+            foreach (var page in Pages)
+            {
+                if (!(page.Value.ContainsKey("use") && page.Value["use"] == templateName))
+                    continue;
+
+                toRemove.Add(page.Key);
+            }
+
+            foreach(var page in toRemove)
+                RemovePage(page);
+
+            Templates.Remove(templateName);
+            File.Delete(_workingDirectory + "templates" + Path.DirectorySeparatorChar + templateName);
+        }
+
+        public void RemovePage(string pageName)
+        {
+            var pagePath = _workingDirectory + "pages" + Path.DirectorySeparatorChar + pageName;
+            foreach (var part in Pages[pageName].Keys)
+            {
+                File.Delete(pagePath + "." + part);
+            }
+
+            Pages.Remove(pageName);
+        }
+
+        public void RemovePagePart(string pageName, string partName)
+        {
+            var path = _workingDirectory + "pages" + Path.DirectorySeparatorChar + pageName + "." + partName;
+            File.Delete(path);
+            Pages[pageName].Remove(partName);
+        }
+
         /// <summary>
         /// Gets a dictionary of all pages using a specific template. Keys are the page name and values are a 
         /// dictionary of all the page parts.
@@ -331,6 +370,8 @@ namespace TemplateEngine
         /// <returns>A dictionary of all pages using a specific template.</returns>
         public Dictionary<string, Dictionary<string, string>> GetPagesUsingTemplate(string templateName) =>
             Pages.Where(p => GetPropertyValue(p.Key, "use") == templateName).ToDictionary(k => k.Key, v => v.Value);
+
+        public Dictionary<string, string> GetPageParts(string pagename) => Pages[pagename];
 
         private void RecursiveCopyStaticFiles(string directoryPath)
         {

@@ -28,211 +28,375 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.workingDirectoryTxt = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.outputDirectoryTxt = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.exeDirectoryTxt = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.generateChk = new System.Windows.Forms.CheckBox();
-            this.cleanOutputChk = new System.Windows.Forms.CheckBox();
-            this.fileFormatChk = new System.Windows.Forms.CheckBox();
-            this.fileFormatTxt = new System.Windows.Forms.TextBox();
-            this.minifyOutputChk = new System.Windows.Forms.CheckBox();
-            this.outputTxt = new System.Windows.Forms.TextBox();
-            this.runBtn = new System.Windows.Forms.Button();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openStaticDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openOutputDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.archiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testPageRegexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToDiskNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.templatesGroupBox = new System.Windows.Forms.GroupBox();
+            this.pagesGroupBox = new System.Windows.Forms.GroupBox();
+            this.pagePartsGroupBox = new System.Windows.Forms.GroupBox();
+            this.templatesListBox = new System.Windows.Forms.ListBox();
+            this.pagesListBox = new System.Windows.Forms.ListBox();
+            this.pagePartsListBox = new System.Windows.Forms.ListBox();
+            this.templateAddBtn = new System.Windows.Forms.Button();
+            this.templatesRemBtn = new System.Windows.Forms.Button();
+            this.templatesEditBtn = new System.Windows.Forms.Button();
+            this.pageGenerateBtn = new System.Windows.Forms.Button();
+            this.pagesRemBtn = new System.Windows.Forms.Button();
+            this.pagesAddBtn = new System.Windows.Forms.Button();
+            this.pagePartsEditBtn = new System.Windows.Forms.Button();
+            this.pagePartsRemBtn = new System.Windows.Forms.Button();
+            this.pagePartsAddBtn = new System.Windows.Forms.Button();
+            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button10 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.menuStrip1.SuspendLayout();
+            this.templatesGroupBox.SuspendLayout();
+            this.pagesGroupBox.SuspendLayout();
+            this.pagePartsGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // menuStrip1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(161, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "File DIrectory (working directory):";
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.projectToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(634, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // workingDirectoryTxt
+            // fileToolStripMenuItem
             // 
-            this.workingDirectoryTxt.Location = new System.Drawing.Point(16, 30);
-            this.workingDirectoryTxt.Name = "workingDirectoryTxt";
-            this.workingDirectoryTxt.Size = new System.Drawing.Size(343, 20);
-            this.workingDirectoryTxt.TabIndex = 1;
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.settingsToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // button1
+            // newToolStripMenuItem
             // 
-            this.button1.Location = new System.Drawing.Point(365, 28);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Select...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Text = "&New";
             // 
-            // button2
+            // openToolStripMenuItem
             // 
-            this.button2.Location = new System.Drawing.Point(365, 68);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Select...";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
-            // outputDirectoryTxt
+            // toolStripSeparator1
             // 
-            this.outputDirectoryTxt.Location = new System.Drawing.Point(16, 70);
-            this.outputDirectoryTxt.Name = "outputDirectoryTxt";
-            this.outputDirectoryTxt.Size = new System.Drawing.Size(343, 20);
-            this.outputDirectoryTxt.TabIndex = 3;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
-            // label2
+            // settingsToolStripMenuItem
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 53);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Output DIrectory:";
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "&Settings";
             // 
-            // button3
+            // exitToolStripMenuItem
             // 
-            this.button3.Location = new System.Drawing.Point(365, 108);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Select...";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // exeDirectoryTxt
+            // projectToolStripMenuItem
             // 
-            this.exeDirectoryTxt.Location = new System.Drawing.Point(16, 110);
-            this.exeDirectoryTxt.Name = "exeDirectoryTxt";
-            this.exeDirectoryTxt.Size = new System.Drawing.Size(343, 20);
-            this.exeDirectoryTxt.TabIndex = 5;
+            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reloadToolStripMenuItem,
+            this.projectSettingsToolStripMenuItem,
+            this.openStaticDirectoryToolStripMenuItem,
+            this.openOutputDirectoryToolStripMenuItem,
+            this.archiveToolStripMenuItem,
+            this.testPageRegexToolStripMenuItem,
+            this.saveToDiskNowToolStripMenuItem});
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.projectToolStripMenuItem.Text = "Project";
             // 
-            // label3
+            // reloadToolStripMenuItem
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 93);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "teng.exe Location:";
+            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.reloadToolStripMenuItem.Text = "&Reload";
+            this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
-            // generateChk
+            // projectSettingsToolStripMenuItem
             // 
-            this.generateChk.AutoSize = true;
-            this.generateChk.Checked = true;
-            this.generateChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.generateChk.Location = new System.Drawing.Point(16, 137);
-            this.generateChk.Name = "generateChk";
-            this.generateChk.Size = new System.Drawing.Size(70, 17);
-            this.generateChk.TabIndex = 7;
-            this.generateChk.Text = "Generate";
-            this.generateChk.UseVisualStyleBackColor = true;
+            this.projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
+            this.projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.projectSettingsToolStripMenuItem.Text = "&Project settings";
             // 
-            // cleanOutputChk
+            // openStaticDirectoryToolStripMenuItem
             // 
-            this.cleanOutputChk.AutoSize = true;
-            this.cleanOutputChk.Checked = true;
-            this.cleanOutputChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cleanOutputChk.Location = new System.Drawing.Point(16, 161);
-            this.cleanOutputChk.Name = "cleanOutputChk";
-            this.cleanOutputChk.Size = new System.Drawing.Size(86, 17);
-            this.cleanOutputChk.TabIndex = 8;
-            this.cleanOutputChk.Text = "Clean output";
-            this.cleanOutputChk.UseVisualStyleBackColor = true;
+            this.openStaticDirectoryToolStripMenuItem.Name = "openStaticDirectoryToolStripMenuItem";
+            this.openStaticDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.openStaticDirectoryToolStripMenuItem.Text = "Open &static directory";
             // 
-            // fileFormatChk
+            // openOutputDirectoryToolStripMenuItem
             // 
-            this.fileFormatChk.AutoSize = true;
-            this.fileFormatChk.Location = new System.Drawing.Point(16, 207);
-            this.fileFormatChk.Name = "fileFormatChk";
-            this.fileFormatChk.Size = new System.Drawing.Size(185, 17);
-            this.fileFormatChk.TabIndex = 10;
-            this.fileFormatChk.Text = "Use non-default output file format:";
-            this.fileFormatChk.UseVisualStyleBackColor = true;
+            this.openOutputDirectoryToolStripMenuItem.Name = "openOutputDirectoryToolStripMenuItem";
+            this.openOutputDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.openOutputDirectoryToolStripMenuItem.Text = "Open &output directory";
             // 
-            // fileFormatTxt
+            // archiveToolStripMenuItem
             // 
-            this.fileFormatTxt.Location = new System.Drawing.Point(207, 204);
-            this.fileFormatTxt.Name = "fileFormatTxt";
-            this.fileFormatTxt.Size = new System.Drawing.Size(100, 20);
-            this.fileFormatTxt.TabIndex = 11;
-            this.fileFormatTxt.Text = "%n.html";
+            this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
+            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.archiveToolStripMenuItem.Text = "&Archive";
             // 
-            // minifyOutputChk
+            // testPageRegexToolStripMenuItem
             // 
-            this.minifyOutputChk.AutoSize = true;
-            this.minifyOutputChk.Checked = true;
-            this.minifyOutputChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.minifyOutputChk.Location = new System.Drawing.Point(16, 184);
-            this.minifyOutputChk.Name = "minifyOutputChk";
-            this.minifyOutputChk.Size = new System.Drawing.Size(183, 17);
-            this.minifyOutputChk.TabIndex = 9;
-            this.minifyOutputChk.Text = "Minify all JS, CSS and HTML files";
-            this.minifyOutputChk.UseVisualStyleBackColor = true;
+            this.testPageRegexToolStripMenuItem.Name = "testPageRegexToolStripMenuItem";
+            this.testPageRegexToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.testPageRegexToolStripMenuItem.Text = "&Test page Regex";
             // 
-            // outputTxt
+            // saveToDiskNowToolStripMenuItem
             // 
-            this.outputTxt.BackColor = System.Drawing.Color.Black;
-            this.outputTxt.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outputTxt.ForeColor = System.Drawing.Color.White;
-            this.outputTxt.Location = new System.Drawing.Point(16, 230);
-            this.outputTxt.Multiline = true;
-            this.outputTxt.Name = "outputTxt";
-            this.outputTxt.ReadOnly = true;
-            this.outputTxt.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.outputTxt.Size = new System.Drawing.Size(424, 154);
-            this.outputTxt.TabIndex = 13;
+            this.saveToDiskNowToolStripMenuItem.Name = "saveToDiskNowToolStripMenuItem";
+            this.saveToDiskNowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.saveToDiskNowToolStripMenuItem.Text = "&Save to disk now";
+            this.saveToDiskNowToolStripMenuItem.Click += new System.EventHandler(this.saveToDiskNowToolStripMenuItem_Click);
             // 
-            // runBtn
+            // templatesGroupBox
             // 
-            this.runBtn.Location = new System.Drawing.Point(365, 203);
-            this.runBtn.Name = "runBtn";
-            this.runBtn.Size = new System.Drawing.Size(75, 23);
-            this.runBtn.TabIndex = 12;
-            this.runBtn.Text = "Run";
-            this.runBtn.UseVisualStyleBackColor = true;
-            this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
+            this.templatesGroupBox.Controls.Add(this.templatesEditBtn);
+            this.templatesGroupBox.Controls.Add(this.templatesRemBtn);
+            this.templatesGroupBox.Controls.Add(this.templateAddBtn);
+            this.templatesGroupBox.Controls.Add(this.templatesListBox);
+            this.templatesGroupBox.Enabled = false;
+            this.templatesGroupBox.Location = new System.Drawing.Point(13, 28);
+            this.templatesGroupBox.Name = "templatesGroupBox";
+            this.templatesGroupBox.Size = new System.Drawing.Size(200, 306);
+            this.templatesGroupBox.TabIndex = 1;
+            this.templatesGroupBox.TabStop = false;
+            this.templatesGroupBox.Text = "Templates";
+            // 
+            // pagesGroupBox
+            // 
+            this.pagesGroupBox.Controls.Add(this.pageGenerateBtn);
+            this.pagesGroupBox.Controls.Add(this.pagesRemBtn);
+            this.pagesGroupBox.Controls.Add(this.pagesAddBtn);
+            this.pagesGroupBox.Controls.Add(this.pagesListBox);
+            this.pagesGroupBox.Enabled = false;
+            this.pagesGroupBox.Location = new System.Drawing.Point(219, 28);
+            this.pagesGroupBox.Name = "pagesGroupBox";
+            this.pagesGroupBox.Size = new System.Drawing.Size(200, 306);
+            this.pagesGroupBox.TabIndex = 2;
+            this.pagesGroupBox.TabStop = false;
+            this.pagesGroupBox.Text = "Pages";
+            // 
+            // pagePartsGroupBox
+            // 
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsEditBtn);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsListBox);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsRemBtn);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsAddBtn);
+            this.pagePartsGroupBox.Enabled = false;
+            this.pagePartsGroupBox.Location = new System.Drawing.Point(425, 28);
+            this.pagePartsGroupBox.Name = "pagePartsGroupBox";
+            this.pagePartsGroupBox.Size = new System.Drawing.Size(200, 306);
+            this.pagePartsGroupBox.TabIndex = 3;
+            this.pagePartsGroupBox.TabStop = false;
+            this.pagePartsGroupBox.Text = "Page Parts";
+            // 
+            // templatesListBox
+            // 
+            this.templatesListBox.FormattingEnabled = true;
+            this.templatesListBox.Location = new System.Drawing.Point(7, 20);
+            this.templatesListBox.Name = "templatesListBox";
+            this.templatesListBox.Size = new System.Drawing.Size(187, 238);
+            this.templatesListBox.TabIndex = 0;
+            this.templatesListBox.SelectedIndexChanged += new System.EventHandler(this.templatesListBox_SelectedIndexChanged);
+            // 
+            // pagesListBox
+            // 
+            this.pagesListBox.FormattingEnabled = true;
+            this.pagesListBox.Location = new System.Drawing.Point(6, 19);
+            this.pagesListBox.Name = "pagesListBox";
+            this.pagesListBox.Size = new System.Drawing.Size(187, 238);
+            this.pagesListBox.TabIndex = 1;
+            this.pagesListBox.SelectedIndexChanged += new System.EventHandler(this.pagesListBox_SelectedIndexChanged);
+            // 
+            // pagePartsListBox
+            // 
+            this.pagePartsListBox.FormattingEnabled = true;
+            this.pagePartsListBox.Location = new System.Drawing.Point(7, 19);
+            this.pagePartsListBox.Name = "pagePartsListBox";
+            this.pagePartsListBox.Size = new System.Drawing.Size(187, 238);
+            this.pagePartsListBox.TabIndex = 1;
+            // 
+            // templateAddBtn
+            // 
+            this.templateAddBtn.Location = new System.Drawing.Point(6, 264);
+            this.templateAddBtn.Name = "templateAddBtn";
+            this.templateAddBtn.Size = new System.Drawing.Size(32, 23);
+            this.templateAddBtn.TabIndex = 1;
+            this.templateAddBtn.Text = "+";
+            this.templateAddBtn.UseVisualStyleBackColor = true;
+            this.templateAddBtn.Click += new System.EventHandler(this.templateAddBtn_Click);
+            // 
+            // templatesRemBtn
+            // 
+            this.templatesRemBtn.Location = new System.Drawing.Point(44, 264);
+            this.templatesRemBtn.Name = "templatesRemBtn";
+            this.templatesRemBtn.Size = new System.Drawing.Size(32, 23);
+            this.templatesRemBtn.TabIndex = 2;
+            this.templatesRemBtn.Text = "-";
+            this.templatesRemBtn.UseVisualStyleBackColor = true;
+            this.templatesRemBtn.Click += new System.EventHandler(this.templatesRemBtn_Click);
+            // 
+            // templatesEditBtn
+            // 
+            this.templatesEditBtn.Location = new System.Drawing.Point(82, 264);
+            this.templatesEditBtn.Name = "templatesEditBtn";
+            this.templatesEditBtn.Size = new System.Drawing.Size(70, 23);
+            this.templatesEditBtn.TabIndex = 3;
+            this.templatesEditBtn.Text = "Edit";
+            this.templatesEditBtn.UseVisualStyleBackColor = true;
+            this.templatesEditBtn.Click += new System.EventHandler(this.templatesEditBtn_Click);
+            // 
+            // pageGenerateBtn
+            // 
+            this.pageGenerateBtn.Location = new System.Drawing.Point(82, 263);
+            this.pageGenerateBtn.Name = "pageGenerateBtn";
+            this.pageGenerateBtn.Size = new System.Drawing.Size(70, 23);
+            this.pageGenerateBtn.TabIndex = 6;
+            this.pageGenerateBtn.Text = "Generate";
+            this.pageGenerateBtn.UseVisualStyleBackColor = true;
+            this.pageGenerateBtn.Click += new System.EventHandler(this.pageGenerateBtn_Click);
+            // 
+            // pagesRemBtn
+            // 
+            this.pagesRemBtn.Location = new System.Drawing.Point(44, 263);
+            this.pagesRemBtn.Name = "pagesRemBtn";
+            this.pagesRemBtn.Size = new System.Drawing.Size(32, 23);
+            this.pagesRemBtn.TabIndex = 5;
+            this.pagesRemBtn.Text = "-";
+            this.pagesRemBtn.UseVisualStyleBackColor = true;
+            this.pagesRemBtn.Click += new System.EventHandler(this.pagesRemBtn_Click);
+            // 
+            // pagesAddBtn
+            // 
+            this.pagesAddBtn.Location = new System.Drawing.Point(6, 263);
+            this.pagesAddBtn.Name = "pagesAddBtn";
+            this.pagesAddBtn.Size = new System.Drawing.Size(32, 23);
+            this.pagesAddBtn.TabIndex = 4;
+            this.pagesAddBtn.Text = "+";
+            this.pagesAddBtn.UseVisualStyleBackColor = true;
+            this.pagesAddBtn.Click += new System.EventHandler(this.pagesAddBtn_Click);
+            // 
+            // pagePartsEditBtn
+            // 
+            this.pagePartsEditBtn.Location = new System.Drawing.Point(83, 263);
+            this.pagePartsEditBtn.Name = "pagePartsEditBtn";
+            this.pagePartsEditBtn.Size = new System.Drawing.Size(70, 23);
+            this.pagePartsEditBtn.TabIndex = 9;
+            this.pagePartsEditBtn.Text = "Edit";
+            this.pagePartsEditBtn.UseVisualStyleBackColor = true;
+            this.pagePartsEditBtn.Click += new System.EventHandler(this.pagePartsEditBtn_Click);
+            // 
+            // pagePartsRemBtn
+            // 
+            this.pagePartsRemBtn.Location = new System.Drawing.Point(45, 263);
+            this.pagePartsRemBtn.Name = "pagePartsRemBtn";
+            this.pagePartsRemBtn.Size = new System.Drawing.Size(32, 23);
+            this.pagePartsRemBtn.TabIndex = 8;
+            this.pagePartsRemBtn.Text = "-";
+            this.pagePartsRemBtn.UseVisualStyleBackColor = true;
+            this.pagePartsRemBtn.Click += new System.EventHandler(this.pagePartsRemBtn_Click);
+            // 
+            // pagePartsAddBtn
+            // 
+            this.pagePartsAddBtn.Location = new System.Drawing.Point(7, 263);
+            this.pagePartsAddBtn.Name = "pagePartsAddBtn";
+            this.pagePartsAddBtn.Size = new System.Drawing.Size(32, 23);
+            this.pagePartsAddBtn.TabIndex = 7;
+            this.pagePartsAddBtn.Text = "+";
+            this.pagePartsAddBtn.UseVisualStyleBackColor = true;
+            this.pagePartsAddBtn.Click += new System.EventHandler(this.pagePartsAddBtn_Click);
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.logTextBox.Location = new System.Drawing.Point(13, 340);
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.ReadOnly = true;
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.logTextBox.Size = new System.Drawing.Size(406, 100);
+            this.logTextBox.TabIndex = 4;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.button10);
+            this.groupBox1.Location = new System.Drawing.Point(425, 340);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(7, 19);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(128, 23);
+            this.button10.TabIndex = 0;
+            this.button10.Text = "Generate all pages";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "templategen.exe";
-            this.openFileDialog1.Filter = "templategen.exe|templategen.exe";
+            this.openFileDialog1.FileName = "project.teng";
+            this.openFileDialog1.Filter = "Teng project files (project.teng)|project.teng|All files (*.*)|*.*";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(454, 393);
-            this.Controls.Add(this.runBtn);
-            this.Controls.Add(this.outputTxt);
-            this.Controls.Add(this.fileFormatTxt);
-            this.Controls.Add(this.fileFormatChk);
-            this.Controls.Add(this.cleanOutputChk);
-            this.Controls.Add(this.generateChk);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.exeDirectoryTxt);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.outputDirectoryTxt);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.workingDirectoryTxt);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.minifyOutputChk);
+            this.ClientSize = new System.Drawing.Size(634, 445);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.logTextBox);
+            this.Controls.Add(this.pagePartsGroupBox);
+            this.Controls.Add(this.pagesGroupBox);
+            this.Controls.Add(this.templatesGroupBox);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Teng Template Engine GUI";
+            this.Text = "TengDK";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.templatesGroupBox.ResumeLayout(false);
+            this.pagesGroupBox.ResumeLayout(false);
+            this.pagePartsGroupBox.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,23 +404,39 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox workingDirectoryTxt;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox outputDirectoryTxt;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox exeDirectoryTxt;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox generateChk;
-        private System.Windows.Forms.CheckBox cleanOutputChk;
-        private System.Windows.Forms.CheckBox fileFormatChk;
-        private System.Windows.Forms.TextBox fileFormatTxt;
-        private System.Windows.Forms.CheckBox minifyOutputChk;
-        private System.Windows.Forms.TextBox outputTxt;
-        private System.Windows.Forms.Button runBtn;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openStaticDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openOutputDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem archiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testPageRegexToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToDiskNowToolStripMenuItem;
+        private System.Windows.Forms.GroupBox templatesGroupBox;
+        private System.Windows.Forms.Button templatesEditBtn;
+        private System.Windows.Forms.Button templatesRemBtn;
+        private System.Windows.Forms.Button templateAddBtn;
+        private System.Windows.Forms.ListBox templatesListBox;
+        private System.Windows.Forms.GroupBox pagesGroupBox;
+        private System.Windows.Forms.Button pageGenerateBtn;
+        private System.Windows.Forms.Button pagesRemBtn;
+        private System.Windows.Forms.Button pagesAddBtn;
+        private System.Windows.Forms.ListBox pagesListBox;
+        private System.Windows.Forms.GroupBox pagePartsGroupBox;
+        private System.Windows.Forms.Button pagePartsEditBtn;
+        private System.Windows.Forms.ListBox pagePartsListBox;
+        private System.Windows.Forms.Button pagePartsRemBtn;
+        private System.Windows.Forms.Button pagePartsAddBtn;
+        private System.Windows.Forms.TextBox logTextBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button10;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
