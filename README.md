@@ -49,15 +49,6 @@ e.g.
 	Generate?
 	Clean?
 
-##.project - **Not implemented yet.**
-Required file.
-
-e.g.
-
-	# Output file format for pages
-	format:%n.html
-	ignore ^\.
-
 ##incfile - **Not implemented yet.**
 Optional file.
 Contains links to other content
