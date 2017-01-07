@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -17,9 +18,9 @@ namespace templategen
                 string workingDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar;
                 string outputDirectory = workingDirectory + "output" + Path.DirectorySeparatorChar;
                 bool shouldCleanOutput = false;
-                bool shouldMinify = true;
                 bool useMultipleThreads = true;
-                string fileFormat = "%n.html";
+                Dictionary<string, bool> shouldMinify = new Dictionary<string, bool>();
+                Dictionary<string, string> fileFormats = new Dictionary<string, string>();
 
                 foreach (var arg in args)
                 {
@@ -32,12 +33,8 @@ namespace templategen
                     }
                     else if (arg.StartsWith("-output="))
                         outputDirectory = arg.Substring(8).AddDirectorySeparatorChar();
-                    else if (arg.StartsWith("-format="))
-                        fileFormat = arg.Substring(8);
                     else if (arg == "-clean")
                         shouldCleanOutput = true;
-                    else if (arg == "-nominify")
-                        shouldMinify = false;
                     else if (arg == "-singlethread")
                         useMultipleThreads = false;
                     else if (File.Exists(arg))
@@ -46,7 +43,7 @@ namespace templategen
                         {
                             var contents = File.ReadAllText(arg);
                             var split = contents.Split('\n');
-                            if (split.Length >= 5)
+                            if (split.Length >= 3)
                             {
                                 workingDirectory = arg.Substring(0, arg.LastIndexOf(Path.DirectorySeparatorChar) + 1);
 
@@ -57,15 +54,14 @@ namespace templategen
                                     outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path;
                                 shouldGen = split[1].Contains("True");
                                 shouldCleanOutput = split[2].Contains("True");
-                                shouldMinify = split[3].Contains("True");
-                                fileFormat = split[4].Contains("null") ? "%n.html" : split[4];
                             }
                             else
                                 Console.WriteLine("Entries missing from file. Ignoring file.");
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(@"Error when loading file: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                            Console.WriteLine(@"Error when loading file: " + ex.Message + Environment.NewLine +
+                                              ex.StackTrace);
                             return;
                         }
                     }
@@ -73,8 +69,40 @@ namespace templategen
                         Console.WriteLine("Invalid argument: " + arg);
                 }
 
+                // Get file formats from file
+                var ffPath = workingDirectory + "fileformats";
+                if (File.Exists(ffPath))
+                {
+                    Console.WriteLine("Using fileformats file");
+                    try
+                    {
+                        var t = File.ReadAllText(ffPath);
+                        var lines = t.Split('\n');
+                        foreach (var line in lines)
+                        {
+                            var items = line.Split(':');
+                            if (items.Length >= 2)
+                            {
+                                var name = StripNewlineChars(items[0]);
+                                fileFormats.Add(name, items[1]);
+
+                                if (items.Length > 2)
+                                    shouldMinify.Add(name, StripNewlineChars(items[2].ToLower()) != "nomin");
+                            }
+                            else
+                                Console.WriteLine("Invalid line " + line + " in fileformats file. Ignoring.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(@"Error when loading fileformats file: " + ex.Message + Environment.NewLine +
+                                          ex.StackTrace);
+                        return;
+                    }
+                }
+
                 Console.WriteLine("Starting template engine...");
-                var engine = new TemplateEngine(outputDirectory, workingDirectory, shouldMinify, fileFormat, useMultipleThreads);
+                var engine = new TemplateEngine(outputDirectory, workingDirectory, shouldMinify, fileFormats, useMultipleThreads);
 
                 if (!engine.VerifyArgs())
                     return;
@@ -103,6 +131,8 @@ namespace templategen
             }
         }
 
+        private static string StripNewlineChars(string s) => s.Replace("\r", "").Replace("\n", "").Trim();
+
         private static void ShowHelp()
         {
             Console.WriteLine("Template Engine");
@@ -110,9 +140,7 @@ namespace templategen
             Console.WriteLine("    -generate -g -gen    Generate output from template");
             Console.WriteLine("    -output=<value>      Set the output directory. Default is ./output/");
             Console.WriteLine("    -dir=<value>         Set the working directory. Default is ./");
-            Console.WriteLine("    -format=<value>      Set the output file format. Default is %n.html");
             Console.WriteLine("    -clean               Clear the output directory before generation");
-            Console.WriteLine("    -nominify            Do not minify the output files");
             Console.WriteLine("    -singlethread        Disable multithreading. Use on single-core machines");
             Console.WriteLine("    <filename>           Loads values from a project file. Use other values after to overwrite ones in this file.");
         }

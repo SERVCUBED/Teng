@@ -1,3 +1,3 @@
 @echo off
 Assoc .teng=tengfile
-Ftype tengfile="%cd%\teng.exe" %%1
+Ftype tengfile="%~dp0teng.exe" %%1

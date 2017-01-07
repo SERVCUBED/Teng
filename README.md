@@ -6,9 +6,7 @@
 	-generate -g -gen    Generate output from templates
     -output=<value>      Set the output directory. Default is ./output/
     -dir=<value>         Set the working directory. Default is ./
-    -format=<value>      Set the output file format. Default is %n.html
     -clean               Clear the output directory before generation
-    -nominify            Do not minify the output files
     -singlethread        Disable multithreading. Use on single-core machines
     <filename>           Loads values from a project file. Use other values after to overwrite ones in this file.
 
@@ -28,6 +26,20 @@
 	*	Copy to \<pagename\>.format in output directory
 *	Copy all .project 'copy' values where exists
 
+##fileformats
+Optional file. Include this to set custom file formats for each template. The format is `<template name>:<format>`. 
+Use `%n` in place of where the page name should go in the format. If `%n` is not present, the line will be rejected and template generation 
+will fail. `:nomin` can be appended to each line to prevent the output being minified.
+
+e.g.
+
+    default:%n.htm
+    php:%n.php:nomin
+
+If there is no fileformats file, the following contents is assumed:
+
+    default:%n.html
+
 ##project.teng
 Optional file.
 
@@ -36,8 +48,6 @@ e.g.
 	C:\OutputDirectory or relative to working
 	Generate?
 	Clean?
-	Minify?
-	Format?
 
 ##.project - **Not implemented yet.**
 Required file.

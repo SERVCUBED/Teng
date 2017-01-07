@@ -12,6 +12,7 @@ body {
 	max-width: 960px;
 	background: #ffffff;
 	padding: 20px;
+	box-shadow: 0 0 7px 0 #333;
 }
 
 li.selected, li.selected a {

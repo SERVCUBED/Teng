@@ -11,30 +11,37 @@ namespace templategen
     {
         private readonly string _outputDirectory;
         private readonly string _workingDirectory;
-        private readonly string _fileFormat;
+        private readonly Dictionary<string, string> _fileFormats;
+        private readonly Dictionary<string, bool> _shouldMin;
         private readonly Dictionary<string, string> _templates = new Dictionary<string, string>(); // name, value
         private int _threadCnt = 0;
-        private readonly bool _shouldMin;
         private readonly bool _useMultipleThreads;
 
-        private Dictionary<string, Dictionary<string, string>> _pages =
+        private readonly Dictionary<string, Dictionary<string, string>> _pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
 
-        public TemplateEngine(string outputdirectory, string workingDirectory, bool shouldMin1, string fileFormat, bool useMultipleThreads)
+        public TemplateEngine(string outputdirectory, string workingDirectory, Dictionary<string, bool> shouldMin1, Dictionary<string, string> fileFormats, bool useMultipleThreads)
         {
             _outputDirectory = outputdirectory;
             _workingDirectory = workingDirectory;
             _shouldMin = shouldMin1;
-            _fileFormat = fileFormat;
             _useMultipleThreads = useMultipleThreads;
+            _fileFormats = fileFormats;
+            if (!_fileFormats.ContainsKey("default"))
+                _fileFormats.Add("default", "%n.html"); // Add default item
+            if (!_shouldMin.ContainsKey("default"))
+                _shouldMin.Add("default", true); // Add default item
         }
 
         public bool VerifyArgs()
         {
-            if (!_fileFormat.Contains("%n"))
+            foreach (var fileFormat in _fileFormats)
             {
-                Console.WriteLine("File format must contain %n (see usage)");
-                return false;
+                if (!fileFormat.Value.Contains("%n"))
+                {
+                    Console.WriteLine("File format must contain %n (see usage)");
+                    return false;
+                }
             }
 
             if (!Directory.Exists(_workingDirectory))
@@ -146,7 +153,23 @@ namespace templategen
         private string ParseMarkdownData(string templateData) => templateData == String.Empty ? 
             String.Empty : Markdig.Markdown.ToHtml(templateData);
 
-        private string FormatOutputFilename(string name) => _fileFormat.Replace("%n", name);
+        private bool ShouldMin(string pageName)
+        {
+            var templateName = GetPropertyValue(pageName, "use");
+
+            return _shouldMin.ContainsKey(templateName) ?
+                _shouldMin[templateName] : _shouldMin["default"]; // Always contains "default" value
+        }
+
+        private string FormatOutputFilename(string name)
+        {
+            var templateName = GetPropertyValue(name, "use");
+
+            string format = _fileFormats.ContainsKey(templateName) ? 
+                _fileFormats[templateName] : _fileFormats["default"]; // Always contains "default" value
+
+            return format.Replace("%n", name);
+        }
 
         private string ParseTemplateRegex(Match m, string pageName)
         {
@@ -180,10 +203,10 @@ namespace templategen
             try
             {
                 // Minify output
-                if (_shouldMin)
+                if (ShouldMin(pageName))
                     content = Uglify.Html(content).ToString();
 
-                File.WriteAllText(_outputDirectory + _fileFormat.Replace("%n", pageName), content);
+                File.WriteAllText(_outputDirectory + FormatOutputFilename(pageName), content);
             }
             catch (Exception ex)
             {
@@ -200,19 +223,20 @@ namespace templategen
             {
                 try
                 {
-                    if (_shouldMin && file.EndsWith(".js"))
+                    var shouldMin = ShouldMin("default");
+                    if (shouldMin && file.EndsWith(".js"))
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Js(contents).ToString();
                         File.WriteAllText(MakeRelativeToOutputFromStaticDirctory(file), contents);
                     }
-                    else if (_shouldMin && file.EndsWith(".css"))
+                    else if (shouldMin && file.EndsWith(".css"))
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Css(contents).ToString();
                         File.WriteAllText(MakeRelativeToOutputFromStaticDirctory(file), contents);
                     }
-                    else if (_shouldMin && file.EndsWith(".html"))
+                    else if (shouldMin && file.EndsWith(".html"))
                     {
                         var contents = File.ReadAllText(file);
                         contents = Uglify.Html(contents).ToString();

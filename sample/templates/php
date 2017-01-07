@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{{t page.title}}</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="application-name" content="Teng Project">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+		<link href="css/main.css" rel="stylesheet">
+		<style>
+		body {
+	        background: #333333;
+        }
+        </style>
+        {{t page.head}}
+    
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <ul>
+                {{t foreach page /.+/}}
+                <li class="{{t p.isactivepage selected}}"><a href="{{t a.p}}">{{t p.title}}</a></li>
+                {{t endforeach}}
+            </ul>
+            
+            <h1>{{t page.title}}</h1>
+            {{t page.body}}{{t pagemd.bodymd}}
+            
+            <div class="footer">
+                {{t page.footer}}
+            </div>
+        </div>
+    </body>
+</html>
