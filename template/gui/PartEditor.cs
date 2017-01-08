@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ICSharpCode.AvalonEdit;
 
 namespace gui
 {
     public partial class PartEditor : Form
     {
+        public TextEditor TextEditor => (elementHost1.Child as Editor)?.textEditor;
+
         public PartEditor()
         {
             InitializeComponent();

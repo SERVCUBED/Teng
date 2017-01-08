@@ -32,9 +32,10 @@
             this.Format = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.MinifyChk = new System.Windows.Forms.CheckBox();
-            this.Contents = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.editor1 = new gui.Editor();
             this.SuspendLayout();
             // 
             // label1
@@ -42,13 +43,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
+            this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Format:";
+            this.label1.Text = "Output file format:";
             // 
             // Format
             // 
-            this.Format.Location = new System.Drawing.Point(60, 12);
+            this.Format.Location = new System.Drawing.Point(108, 12);
             this.Format.Name = "Format";
             this.Format.Size = new System.Drawing.Size(101, 20);
             this.Format.TabIndex = 1;
@@ -56,7 +57,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(167, 10);
+            this.button1.Location = new System.Drawing.Point(215, 10);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -69,29 +70,17 @@
             this.MinifyChk.AutoSize = true;
             this.MinifyChk.Checked = true;
             this.MinifyChk.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MinifyChk.Location = new System.Drawing.Point(60, 38);
+            this.MinifyChk.Location = new System.Drawing.Point(108, 38);
             this.MinifyChk.Name = "MinifyChk";
             this.MinifyChk.Size = new System.Drawing.Size(97, 17);
             this.MinifyChk.TabIndex = 3;
             this.MinifyChk.Text = "Minify contents";
             this.MinifyChk.UseVisualStyleBackColor = true;
             // 
-            // Contents
-            // 
-            this.Contents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Contents.Location = new System.Drawing.Point(12, 61);
-            this.Contents.Multiline = true;
-            this.Contents.Name = "Contents";
-            this.Contents.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.Contents.Size = new System.Drawing.Size(331, 208);
-            this.Contents.TabIndex = 4;
-            // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(268, 275);
+            this.button2.Location = new System.Drawing.Point(497, 326);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -103,22 +92,34 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Location = new System.Drawing.Point(187, 275);
+            this.button3.Location = new System.Drawing.Point(416, 326);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
             this.button3.Text = "Cancel";
             this.button3.UseVisualStyleBackColor = true;
             // 
+            // elementHost1
+            // 
+            this.elementHost1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.elementHost1.Location = new System.Drawing.Point(15, 61);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(557, 259);
+            this.elementHost1.TabIndex = 7;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.editor1;
+            // 
             // TemplateFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button3;
-            this.ClientSize = new System.Drawing.Size(355, 310);
+            this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.Contents);
             this.Controls.Add(this.MinifyChk);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Format);
@@ -138,6 +139,7 @@
         private System.Windows.Forms.Button button3;
         internal System.Windows.Forms.TextBox Format;
         internal System.Windows.Forms.CheckBox MinifyChk;
-        internal System.Windows.Forms.TextBox Contents;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private Editor editor1;
     }
 }

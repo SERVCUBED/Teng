@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using ICSharpCode.AvalonEdit.Highlighting;
 using TemplateEngine;
 
 namespace gui
@@ -166,10 +167,11 @@ namespace gui
         {
             button10.Enabled = false;
             Log("Generating");
-            var r = engine.Generate();
+            var r = engine?.Generate();
 
-            foreach (var item in r)
-                Log(item);
+            if (r != null)
+                foreach (var item in r)
+                    Log(item);
             Log("Done");
             button10.Enabled = true;
         }
@@ -242,7 +244,7 @@ namespace gui
 
             var f = new TemplateFrm
             {
-                Contents = {Text = engine.Templates[name]},
+                Editor = {Text = engine.Templates[name]},
                 Format = {Text = engine.FileFormatsDictionary.ContainsKey(name)? engine.FileFormatsDictionary[name] : "default"},
                 MinifyChk = {Checked = !engine.NoMinList.Contains(name)},
                 Text = @"Editing template: " + name
@@ -250,7 +252,7 @@ namespace gui
 
             if (f.ShowDialog() != DialogResult.OK) return;
 
-            engine.Templates[name] = f.Contents.Text;
+            engine.Templates[name] = f.Editor.Text;
             if (engine.FileFormatsDictionary.ContainsKey(name))
             {
                 if (f.Format.Text == "default")
@@ -272,7 +274,7 @@ namespace gui
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            engine.SaveAllFiles();
+            engine?.SaveAllFiles();
         }
 
         private void pagesAddBtn_Click(object sender, EventArgs e)
@@ -348,16 +350,23 @@ namespace gui
                 engine.Pages[page].Add(part, String.Empty);
 
             var f = new PartEditor();
-            f.textBox1.Text = engine.Pages[page][part];
+            f.TextEditor.Text = engine.Pages[page][part];
             f.Text = $"Editing page part: {page}.{part}";
+            if (part.EndsWith("md"))
+                f.TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("MarkDown");
             if (f.ShowDialog() == DialogResult.OK)
-                engine.Pages[page][part] = f.textBox1.Text;
+                engine.Pages[page][part] = f.TextEditor.Text;
         }
 
         private void pagePartsEditBtn_Click(object sender, EventArgs e)
         {
             if (pagePartsListBox.SelectedIndex > -1)
                 EditPagePart(pagesListBox.SelectedItem.ToString(), pagePartsListBox.SelectedItem.ToString());
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            engine?.CleanOutput();
         }
     }
 

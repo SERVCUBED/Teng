@@ -44,24 +44,25 @@
             this.testPageRegexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToDiskNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.templatesGroupBox = new System.Windows.Forms.GroupBox();
-            this.pagesGroupBox = new System.Windows.Forms.GroupBox();
-            this.pagePartsGroupBox = new System.Windows.Forms.GroupBox();
-            this.templatesListBox = new System.Windows.Forms.ListBox();
-            this.pagesListBox = new System.Windows.Forms.ListBox();
-            this.pagePartsListBox = new System.Windows.Forms.ListBox();
-            this.templateAddBtn = new System.Windows.Forms.Button();
-            this.templatesRemBtn = new System.Windows.Forms.Button();
             this.templatesEditBtn = new System.Windows.Forms.Button();
+            this.templatesRemBtn = new System.Windows.Forms.Button();
+            this.templateAddBtn = new System.Windows.Forms.Button();
+            this.templatesListBox = new System.Windows.Forms.ListBox();
+            this.pagesGroupBox = new System.Windows.Forms.GroupBox();
             this.pageGenerateBtn = new System.Windows.Forms.Button();
             this.pagesRemBtn = new System.Windows.Forms.Button();
             this.pagesAddBtn = new System.Windows.Forms.Button();
+            this.pagesListBox = new System.Windows.Forms.ListBox();
+            this.pagePartsGroupBox = new System.Windows.Forms.GroupBox();
             this.pagePartsEditBtn = new System.Windows.Forms.Button();
+            this.pagePartsListBox = new System.Windows.Forms.ListBox();
             this.pagePartsRemBtn = new System.Windows.Forms.Button();
             this.pagePartsAddBtn = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button10 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.templatesGroupBox.SuspendLayout();
             this.pagesGroupBox.SuspendLayout();
@@ -95,31 +96,31 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.newToolStripMenuItem.Text = "&New";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.settingsToolStripMenuItem.Text = "&Settings";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -195,6 +196,45 @@
             this.templatesGroupBox.TabStop = false;
             this.templatesGroupBox.Text = "Templates";
             // 
+            // templatesEditBtn
+            // 
+            this.templatesEditBtn.Location = new System.Drawing.Point(82, 264);
+            this.templatesEditBtn.Name = "templatesEditBtn";
+            this.templatesEditBtn.Size = new System.Drawing.Size(70, 23);
+            this.templatesEditBtn.TabIndex = 3;
+            this.templatesEditBtn.Text = "Edit";
+            this.templatesEditBtn.UseVisualStyleBackColor = true;
+            this.templatesEditBtn.Click += new System.EventHandler(this.templatesEditBtn_Click);
+            // 
+            // templatesRemBtn
+            // 
+            this.templatesRemBtn.Location = new System.Drawing.Point(44, 264);
+            this.templatesRemBtn.Name = "templatesRemBtn";
+            this.templatesRemBtn.Size = new System.Drawing.Size(32, 23);
+            this.templatesRemBtn.TabIndex = 2;
+            this.templatesRemBtn.Text = "-";
+            this.templatesRemBtn.UseVisualStyleBackColor = true;
+            this.templatesRemBtn.Click += new System.EventHandler(this.templatesRemBtn_Click);
+            // 
+            // templateAddBtn
+            // 
+            this.templateAddBtn.Location = new System.Drawing.Point(6, 264);
+            this.templateAddBtn.Name = "templateAddBtn";
+            this.templateAddBtn.Size = new System.Drawing.Size(32, 23);
+            this.templateAddBtn.TabIndex = 1;
+            this.templateAddBtn.Text = "+";
+            this.templateAddBtn.UseVisualStyleBackColor = true;
+            this.templateAddBtn.Click += new System.EventHandler(this.templateAddBtn_Click);
+            // 
+            // templatesListBox
+            // 
+            this.templatesListBox.FormattingEnabled = true;
+            this.templatesListBox.Location = new System.Drawing.Point(7, 20);
+            this.templatesListBox.Name = "templatesListBox";
+            this.templatesListBox.Size = new System.Drawing.Size(187, 238);
+            this.templatesListBox.TabIndex = 0;
+            this.templatesListBox.SelectedIndexChanged += new System.EventHandler(this.templatesListBox_SelectedIndexChanged);
+            // 
             // pagesGroupBox
             // 
             this.pagesGroupBox.Controls.Add(this.pageGenerateBtn);
@@ -208,76 +248,6 @@
             this.pagesGroupBox.TabIndex = 2;
             this.pagesGroupBox.TabStop = false;
             this.pagesGroupBox.Text = "Pages";
-            // 
-            // pagePartsGroupBox
-            // 
-            this.pagePartsGroupBox.Controls.Add(this.pagePartsEditBtn);
-            this.pagePartsGroupBox.Controls.Add(this.pagePartsListBox);
-            this.pagePartsGroupBox.Controls.Add(this.pagePartsRemBtn);
-            this.pagePartsGroupBox.Controls.Add(this.pagePartsAddBtn);
-            this.pagePartsGroupBox.Enabled = false;
-            this.pagePartsGroupBox.Location = new System.Drawing.Point(425, 28);
-            this.pagePartsGroupBox.Name = "pagePartsGroupBox";
-            this.pagePartsGroupBox.Size = new System.Drawing.Size(200, 306);
-            this.pagePartsGroupBox.TabIndex = 3;
-            this.pagePartsGroupBox.TabStop = false;
-            this.pagePartsGroupBox.Text = "Page Parts";
-            // 
-            // templatesListBox
-            // 
-            this.templatesListBox.FormattingEnabled = true;
-            this.templatesListBox.Location = new System.Drawing.Point(7, 20);
-            this.templatesListBox.Name = "templatesListBox";
-            this.templatesListBox.Size = new System.Drawing.Size(187, 238);
-            this.templatesListBox.TabIndex = 0;
-            this.templatesListBox.SelectedIndexChanged += new System.EventHandler(this.templatesListBox_SelectedIndexChanged);
-            // 
-            // pagesListBox
-            // 
-            this.pagesListBox.FormattingEnabled = true;
-            this.pagesListBox.Location = new System.Drawing.Point(6, 19);
-            this.pagesListBox.Name = "pagesListBox";
-            this.pagesListBox.Size = new System.Drawing.Size(187, 238);
-            this.pagesListBox.TabIndex = 1;
-            this.pagesListBox.SelectedIndexChanged += new System.EventHandler(this.pagesListBox_SelectedIndexChanged);
-            // 
-            // pagePartsListBox
-            // 
-            this.pagePartsListBox.FormattingEnabled = true;
-            this.pagePartsListBox.Location = new System.Drawing.Point(7, 19);
-            this.pagePartsListBox.Name = "pagePartsListBox";
-            this.pagePartsListBox.Size = new System.Drawing.Size(187, 238);
-            this.pagePartsListBox.TabIndex = 1;
-            // 
-            // templateAddBtn
-            // 
-            this.templateAddBtn.Location = new System.Drawing.Point(6, 264);
-            this.templateAddBtn.Name = "templateAddBtn";
-            this.templateAddBtn.Size = new System.Drawing.Size(32, 23);
-            this.templateAddBtn.TabIndex = 1;
-            this.templateAddBtn.Text = "+";
-            this.templateAddBtn.UseVisualStyleBackColor = true;
-            this.templateAddBtn.Click += new System.EventHandler(this.templateAddBtn_Click);
-            // 
-            // templatesRemBtn
-            // 
-            this.templatesRemBtn.Location = new System.Drawing.Point(44, 264);
-            this.templatesRemBtn.Name = "templatesRemBtn";
-            this.templatesRemBtn.Size = new System.Drawing.Size(32, 23);
-            this.templatesRemBtn.TabIndex = 2;
-            this.templatesRemBtn.Text = "-";
-            this.templatesRemBtn.UseVisualStyleBackColor = true;
-            this.templatesRemBtn.Click += new System.EventHandler(this.templatesRemBtn_Click);
-            // 
-            // templatesEditBtn
-            // 
-            this.templatesEditBtn.Location = new System.Drawing.Point(82, 264);
-            this.templatesEditBtn.Name = "templatesEditBtn";
-            this.templatesEditBtn.Size = new System.Drawing.Size(70, 23);
-            this.templatesEditBtn.TabIndex = 3;
-            this.templatesEditBtn.Text = "Edit";
-            this.templatesEditBtn.UseVisualStyleBackColor = true;
-            this.templatesEditBtn.Click += new System.EventHandler(this.templatesEditBtn_Click);
             // 
             // pageGenerateBtn
             // 
@@ -309,6 +279,29 @@
             this.pagesAddBtn.UseVisualStyleBackColor = true;
             this.pagesAddBtn.Click += new System.EventHandler(this.pagesAddBtn_Click);
             // 
+            // pagesListBox
+            // 
+            this.pagesListBox.FormattingEnabled = true;
+            this.pagesListBox.Location = new System.Drawing.Point(6, 19);
+            this.pagesListBox.Name = "pagesListBox";
+            this.pagesListBox.Size = new System.Drawing.Size(187, 238);
+            this.pagesListBox.TabIndex = 1;
+            this.pagesListBox.SelectedIndexChanged += new System.EventHandler(this.pagesListBox_SelectedIndexChanged);
+            // 
+            // pagePartsGroupBox
+            // 
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsEditBtn);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsListBox);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsRemBtn);
+            this.pagePartsGroupBox.Controls.Add(this.pagePartsAddBtn);
+            this.pagePartsGroupBox.Enabled = false;
+            this.pagePartsGroupBox.Location = new System.Drawing.Point(425, 28);
+            this.pagePartsGroupBox.Name = "pagePartsGroupBox";
+            this.pagePartsGroupBox.Size = new System.Drawing.Size(200, 306);
+            this.pagePartsGroupBox.TabIndex = 3;
+            this.pagePartsGroupBox.TabStop = false;
+            this.pagePartsGroupBox.Text = "Page Parts";
+            // 
             // pagePartsEditBtn
             // 
             this.pagePartsEditBtn.Location = new System.Drawing.Point(83, 263);
@@ -318,6 +311,14 @@
             this.pagePartsEditBtn.Text = "Edit";
             this.pagePartsEditBtn.UseVisualStyleBackColor = true;
             this.pagePartsEditBtn.Click += new System.EventHandler(this.pagePartsEditBtn_Click);
+            // 
+            // pagePartsListBox
+            // 
+            this.pagePartsListBox.FormattingEnabled = true;
+            this.pagePartsListBox.Location = new System.Drawing.Point(7, 19);
+            this.pagePartsListBox.Name = "pagePartsListBox";
+            this.pagePartsListBox.Size = new System.Drawing.Size(187, 238);
+            this.pagePartsListBox.TabIndex = 1;
             // 
             // pagePartsRemBtn
             // 
@@ -352,6 +353,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Location = new System.Drawing.Point(425, 340);
             this.groupBox1.Name = "groupBox1";
@@ -373,6 +375,16 @@
             // 
             this.openFileDialog1.FileName = "project.teng";
             this.openFileDialog1.Filter = "Teng project files (project.teng)|project.teng|All files (*.*)|*.*";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Clean output";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -438,6 +450,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
