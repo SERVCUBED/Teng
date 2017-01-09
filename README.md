@@ -73,7 +73,7 @@ e.g.
 		<body>
 			{{t template.menu}} <-- load the 'menu' template
 			{{t page.body}} <-- 'body' is the element relating to the current page
-			{{t mdpage.body}} <-- same as above but processes in markdown instead
+			{{t pagemd.body}} <-- same as above but processes in markdown instead
 			<p>Compiled on: {{t t.datetimenow}}</p> <-- possibility for built-in functions
 		</body>
 	</html>
