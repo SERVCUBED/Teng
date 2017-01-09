@@ -16,9 +16,9 @@ namespace TemplateEngine
         public readonly Dictionary<string, string> FileFormatsDictionary;
         public readonly List<string> NoMinList;
         public readonly Dictionary<string, string> Templates = new Dictionary<string, string>(); // name, value
-        private int _threadCnt = 0;
         private readonly bool _useMultipleThreads;
         private List<string> _warnings = new List<string>();
+        private ThreadManager _threadManager;
 
         public readonly Dictionary<string, Dictionary<string, string>> Pages =
             new Dictionary<string, Dictionary<string, string>>(); // name -> use,title,body etc
@@ -33,6 +33,8 @@ namespace TemplateEngine
             FileFormatsDictionary = fileFormatsDictionary;
             if (!FileFormatsDictionary.ContainsKey("default"))
                 FileFormatsDictionary.Add("default", "%n.html"); // Add default item
+
+            _threadManager = useMultipleThreads ? new ThreadManager() : new ThreadManager(10, 0);
 
             GetFiles();
         }
@@ -421,29 +423,6 @@ namespace TemplateEngine
         private string MakeRelativeToOutputFromStaticDirectory(string p)
             => p.Replace(_workingDirectory + "static" + Path.DirectorySeparatorChar, _outputDirectory);
 
-        private void StartSafeThread(Func<bool> func)
-        {
-            while (_threadCnt > 10) // Max 10 threads
-                Thread.Sleep(1);
-
-            _threadCnt++;
-            if (_useMultipleThreads)
-            {
-                var f = func;
-                var t = new Thread(() =>
-                {
-                    f.Invoke();
-                    _threadCnt--;
-                });
-                t.Start();
-            }
-            else
-            {
-                func.Invoke();
-                _threadCnt--;
-            }
-        }
-
         public List<string> Generate()
         {
             _warnings = new List<string>();
@@ -454,27 +433,22 @@ namespace TemplateEngine
             foreach (var page in Pages)
             {
                 if (page.Key != "default")
-                    StartSafeThread(() =>
+                    _threadManager.RunThread(() =>
                     {
                         var key = page.Key;
                         ParsePageAndSave(key);
-                        return true;
                     });
             }
 
             // Copy static files
             var dir = _workingDirectory + "static" + Path.DirectorySeparatorChar;
             if (Directory.Exists(dir))
-                StartSafeThread(() =>
+                _threadManager.RunThread(() =>
                 {
                     RecursiveCopyStaticFiles(dir);
-                    return true;
                 });
 
-            while (_threadCnt > 0)
-            {
-                Thread.Sleep(10);
-            }
+            _threadManager.WaitForFinish();
 
             return _warnings;
         }
