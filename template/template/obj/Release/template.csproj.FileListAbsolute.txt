@@ -1,8 +1,0 @@
-C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\templategen.exe.config
-C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\templategen.exe
-C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\templategen.pdb
-C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\NUglify.dll
-C:\Users\mail\Documents\GitHub\template\template\template\bin\Release\NUglify.xml
-C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\templategen.exe
-C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\templategen.pdb
-C:\Users\mail\Documents\GitHub\template\template\template\obj\Release\template.csprojResolveAssemblyReference.cache
