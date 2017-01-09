@@ -38,6 +38,13 @@ namespace gui
         {
             ResetUI();
             _filePath = filePath;
+
+            if (filePath == null)
+            {
+                Log("Cannot load empty file path.");
+                return;
+            }
+
             try
             {
                 string workingDirectory;
@@ -183,7 +190,10 @@ namespace gui
 
         private void saveToDiskNowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var r = engine.SaveAllFiles();
+            var r = engine?.SaveAllFiles();
+            if (r == null)
+                return;
+
             foreach (var item in r)
                 Log(item);
             Log("Saved all files");

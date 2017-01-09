@@ -1552,9 +1552,20 @@
             svg, time, tt, u, var)
             </summary>
         </member>
+        <member name="P:NUglify.Html.HtmlSettings.KeepOneSpaceWhenCollapsing">
+            <summary>
+            Gets or sets a value indicating whether to keep one space when collapsing.
+            </summary>
+            <value><c>true</c> to keep one space when collapsing; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:NUglify.Html.HtmlSettings.TagsWithNonCollapsableWhitespaces">
             <summary>
             Gets the tags with non collapsable whitespaces (default: pre, textarea)
+            </summary>
+        </member>
+        <member name="P:NUglify.Html.HtmlSettings.KeepCommentsRegex">
+            <summary>
+            Gets a list of regex that will be matched against a HTML comment content. If a regex matches a HTML comment content, the comment will be kept
             </summary>
         </member>
         <member name="M:NUglify.Html.HtmlSettings.Pretty">
