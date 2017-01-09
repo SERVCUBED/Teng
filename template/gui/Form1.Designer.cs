@@ -60,9 +60,9 @@
             this.pagePartsAddBtn = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.templatesGroupBox.SuspendLayout();
             this.pagesGroupBox.SuspendLayout();
@@ -95,32 +95,34 @@
             // 
             // newToolStripMenuItem
             // 
+            this.newToolStripMenuItem.Enabled = false;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // settingsToolStripMenuItem
             // 
+            this.settingsToolStripMenuItem.Enabled = false;
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "&Settings";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -147,30 +149,35 @@
             // 
             // projectSettingsToolStripMenuItem
             // 
+            this.projectSettingsToolStripMenuItem.Enabled = false;
             this.projectSettingsToolStripMenuItem.Name = "projectSettingsToolStripMenuItem";
             this.projectSettingsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.projectSettingsToolStripMenuItem.Text = "&Project settings";
             // 
             // openStaticDirectoryToolStripMenuItem
             // 
+            this.openStaticDirectoryToolStripMenuItem.Enabled = false;
             this.openStaticDirectoryToolStripMenuItem.Name = "openStaticDirectoryToolStripMenuItem";
             this.openStaticDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.openStaticDirectoryToolStripMenuItem.Text = "Open &static directory";
             // 
             // openOutputDirectoryToolStripMenuItem
             // 
+            this.openOutputDirectoryToolStripMenuItem.Enabled = false;
             this.openOutputDirectoryToolStripMenuItem.Name = "openOutputDirectoryToolStripMenuItem";
             this.openOutputDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.openOutputDirectoryToolStripMenuItem.Text = "Open &output directory";
             // 
             // archiveToolStripMenuItem
             // 
+            this.archiveToolStripMenuItem.Enabled = false;
             this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
             this.archiveToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.archiveToolStripMenuItem.Text = "&Archive";
             // 
             // testPageRegexToolStripMenuItem
             // 
+            this.testPageRegexToolStripMenuItem.Enabled = false;
             this.testPageRegexToolStripMenuItem.Name = "testPageRegexToolStripMenuItem";
             this.testPageRegexToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.testPageRegexToolStripMenuItem.Text = "&Test page Regex";
@@ -361,6 +368,16 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(7, 48);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Clean output";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(7, 19);
@@ -375,16 +392,6 @@
             // 
             this.openFileDialog1.FileName = "project.teng";
             this.openFileDialog1.Filter = "Teng project files (project.teng)|project.teng|All files (*.*)|*.*";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(7, 48);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Clean output";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 

@@ -351,7 +351,7 @@ namespace gui
 
             var f = new PartEditor();
             f.TextEditor.Text = engine.Pages[page][part];
-            f.Text = $"Editing page part: {page}.{part}";
+            f.Text = $@"Editing page part: {page}.{part}";
             if (part.EndsWith("md"))
                 f.TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("MarkDown");
             if (f.ShowDialog() == DialogResult.OK)
