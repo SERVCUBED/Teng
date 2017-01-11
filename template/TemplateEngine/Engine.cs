@@ -11,8 +11,8 @@ namespace TemplateEngine
 {
     public partial class Engine
     {
-        private readonly string _outputDirectory;
-        private readonly string _workingDirectory;
+        public readonly string OutputDirectory;
+        public readonly string WorkingDirectory;
         public readonly Dictionary<string, string> FileFormatsDictionary;
         public readonly List<string> NoMinList;
         public readonly Dictionary<string, string> Templates = new Dictionary<string, string>(); // name, value
@@ -26,8 +26,8 @@ namespace TemplateEngine
         public Engine(string outputdirectory, string workingDirectory, List<string> noMin1,
             Dictionary<string, string> fileFormatsDictionary, bool useMultipleThreads)
         {
-            _outputDirectory = outputdirectory;
-            _workingDirectory = workingDirectory;
+            OutputDirectory = outputdirectory;
+            WorkingDirectory = workingDirectory;
             NoMinList = noMin1;
             _useMultipleThreads = useMultipleThreads;
             FileFormatsDictionary = fileFormatsDictionary;
@@ -53,7 +53,7 @@ namespace TemplateEngine
                 }
             }
 
-            if (!Directory.Exists(_workingDirectory))
+            if (!Directory.Exists(WorkingDirectory))
             {
                 return "Working directory must exist";
             }
@@ -67,15 +67,15 @@ namespace TemplateEngine
         /// <returns>Error message. Null on success</returns>
         public string CleanOutput()
         {
-            if (!Directory.Exists(_outputDirectory))
+            if (!Directory.Exists(OutputDirectory))
                 return null;
             try
             {
-                Clean(_outputDirectory);
+                Clean(OutputDirectory);
             }
             catch (Exception ex)
             {
-                return "Unable to clean directory " + _outputDirectory + "\r\n" + ex.Message;
+                return "Unable to clean directory " + OutputDirectory + "\r\n" + ex.Message;
             }
             return null;
         }
@@ -95,7 +95,7 @@ namespace TemplateEngine
 
         public void GetFiles()
         {
-            foreach (var file in Directory.GetFiles(_workingDirectory + "templates"))
+            foreach (var file in Directory.GetFiles(WorkingDirectory + "templates"))
             {
                 try
                 {
@@ -110,7 +110,7 @@ namespace TemplateEngine
 #endif
                 }
             }
-            foreach (var file in Directory.GetFiles(_workingDirectory + "pages"))
+            foreach (var file in Directory.GetFiles(WorkingDirectory + "pages"))
             {
                 try
                 {
@@ -209,7 +209,7 @@ namespace TemplateEngine
                 if (ShouldMinPage(pageName))
                     content = Uglify.Html(content).ToString();
 
-                File.WriteAllText(_outputDirectory + FormatOutputFilename(pageName), content);
+                File.WriteAllText(OutputDirectory + FormatOutputFilename(pageName), content);
             }
             catch (Exception ex)
             {
@@ -231,7 +231,7 @@ namespace TemplateEngine
             if (!Pages.ContainsKey(pageName))
                 throw new KeyNotFoundException($"The page {pageName} could not be found.");
             var pageItems = Pages[pageName];
-            var pagePath = $"{_workingDirectory}pages{Path.DirectorySeparatorChar}{pageName}";
+            var pagePath = $"{WorkingDirectory}pages{Path.DirectorySeparatorChar}{pageName}";
             foreach (var pageItem in pageItems)
             {
                 var path = pagePath + "." + pageItem.Key;
@@ -282,7 +282,7 @@ namespace TemplateEngine
             {
                 text += line.Key + line.Value + Environment.NewLine;
             }
-            File.WriteAllText(_workingDirectory + "fileformats", text);
+            File.WriteAllText(WorkingDirectory + "fileformats", text);
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ namespace TemplateEngine
         public List<string> SaveTemplates()
         {
             _warnings = new List<string>();
-            var templateDir = $"{_workingDirectory}{Path.DirectorySeparatorChar}templates{Path.DirectorySeparatorChar}";
+            var templateDir = $"{WorkingDirectory}{Path.DirectorySeparatorChar}templates{Path.DirectorySeparatorChar}";
 
             foreach (var template in Templates)
             {
@@ -343,12 +343,12 @@ namespace TemplateEngine
                 RemovePage(page);
 
             Templates.Remove(templateName);
-            File.Delete(_workingDirectory + "templates" + Path.DirectorySeparatorChar + templateName);
+            File.Delete(WorkingDirectory + "templates" + Path.DirectorySeparatorChar + templateName);
         }
 
         public void RemovePage(string pageName)
         {
-            var pagePath = _workingDirectory + "pages" + Path.DirectorySeparatorChar + pageName;
+            var pagePath = WorkingDirectory + "pages" + Path.DirectorySeparatorChar + pageName;
             foreach (var part in Pages[pageName].Keys)
             {
                 File.Delete(pagePath + "." + part);
@@ -359,7 +359,7 @@ namespace TemplateEngine
 
         public void RemovePagePart(string pageName, string partName)
         {
-            var path = _workingDirectory + "pages" + Path.DirectorySeparatorChar + pageName + "." + partName;
+            var path = WorkingDirectory + "pages" + Path.DirectorySeparatorChar + pageName + "." + partName;
             File.Delete(path);
             Pages[pageName].Remove(partName);
         }
@@ -373,7 +373,7 @@ namespace TemplateEngine
         public Dictionary<string, Dictionary<string, string>> GetPagesUsingTemplate(string templateName) =>
             Pages.Where(p => GetPropertyValue(p.Key, "use") == templateName).ToDictionary(k => k.Key, v => v.Value);
 
-        public Dictionary<string, string> GetPageParts(string pagename) => Pages[pagename];
+        public Dictionary<string, string> GetPageParts(string pagename) => Pages.ContainsKey(pagename)? Pages[pagename] : null;
 
         private void RecursiveCopyStaticFiles(string directoryPath)
         {
@@ -381,7 +381,7 @@ namespace TemplateEngine
             {
                 try
                 {
-                    var shouldMin = ShouldMinPage("default");
+                    var shouldMin = ShouldMinPage("static");
                     if (shouldMin && file.EndsWith(".js"))
                     {
                         var contents = File.ReadAllText(file);
@@ -421,7 +421,7 @@ namespace TemplateEngine
         }
 
         private string MakeRelativeToOutputFromStaticDirectory(string p)
-            => p.Replace(_workingDirectory + "static" + Path.DirectorySeparatorChar, _outputDirectory);
+            => p.Replace(WorkingDirectory + "static" + Path.DirectorySeparatorChar, OutputDirectory);
 
         public List<string> Generate()
         {
@@ -429,7 +429,7 @@ namespace TemplateEngine
             // Check for incfile file
 
             // Parse and save (not default page)
-            Directory.CreateDirectory(_outputDirectory);
+            Directory.CreateDirectory(OutputDirectory);
             foreach (var page in Pages)
             {
                 if (page.Key != "default")
@@ -441,7 +441,7 @@ namespace TemplateEngine
             }
 
             // Copy static files
-            var dir = _workingDirectory + "static" + Path.DirectorySeparatorChar;
+            var dir = WorkingDirectory + "static" + Path.DirectorySeparatorChar;
             if (Directory.Exists(dir))
                 _threadManager.RunThread(() =>
                 {

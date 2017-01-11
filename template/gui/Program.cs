@@ -17,7 +17,7 @@ namespace gui
             var filepath = args.Length == 0 ? null : String.Join(" ", args);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(filepath));
+            Application.Run(new MainFrm(filepath));
         }
     }
 }

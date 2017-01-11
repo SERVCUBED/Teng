@@ -41,6 +41,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -59,11 +60,11 @@
     <Compile Include="Editor.xaml.cs">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="MainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainFrm.Designer.cs">
+      <DependentUpon>MainFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputBox.cs">
       <SubType>Form</SubType>
@@ -72,6 +73,12 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="MyCompletionData.cs" />
+    <Compile Include="PageRegexTestFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PageRegexTestFrm.Designer.cs">
+      <DependentUpon>PageRegexTestFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PartEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,11 +93,14 @@
     <Compile Include="TemplateFrm.Designer.cs">
       <DependentUpon>TemplateFrm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainFrm.resx">
+      <DependentUpon>MainFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PageRegexTestFrm.resx">
+      <DependentUpon>PageRegexTestFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PartEditor.resx">
       <DependentUpon>PartEditor.cs</DependentUpon>

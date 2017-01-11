@@ -10,18 +10,20 @@ using TemplateEngine;
 
 namespace gui
 {
-    public partial class Form1 : Form
+    public partial class MainFrm : Form
     {
-        private Engine engine;
+        private Engine _engine;
         private string _filePath;
 
-        public Form1(string filePath)
+        public MainFrm(string filePath)
         {
             InitializeComponent();
 
             if (filePath != null && File.Exists(filePath))
                 LoadFile(filePath);
         }
+
+        #region UI
 
         private void ResetUI()
         {
@@ -33,6 +35,22 @@ namespace gui
             pagePartsGroupBox.Enabled = false;
             logTextBox.Clear();
         }
+
+        private void ReloadUI()
+        {
+            templatesListBox.Items.Clear();
+            templatesListBox.Items.Add("All Pages");
+            templatesListBox.Items.AddRange(_engine.Templates?.Keys.ToArray());
+            templatesGroupBox.Enabled = true;
+            projectToolStripMenuItem.Enabled = true;
+
+            pagesGroupBox.Enabled = false;
+            pagePartsGroupBox.Enabled = false;
+            pagesListBox.Items.Clear();
+            pagePartsListBox.Items.Clear();
+        }
+
+        #endregion
 
         private void LoadFile(string filePath)
         {
@@ -106,9 +124,9 @@ namespace gui
                     }
 
                     Log("Starting template engine...");
-                    engine = new Engine(outputDirectory, workingDirectory, noMinify, fileFormats, true);
+                    _engine = new Engine(outputDirectory, workingDirectory, noMinify, fileFormats, true);
 
-                    var verifyResult = engine.VerifyArgs();
+                    var verifyResult = _engine.VerifyArgs();
                     if (verifyResult != null)
                     {
                         Log(verifyResult);
@@ -122,17 +140,10 @@ namespace gui
                 Log(@"Error when loading file: " + ex.Message + Environment.NewLine + ex.StackTrace);
             }
 
-            if (engine == null)
+            if (_engine == null)
                 return;
-            
-            templatesListBox.Items.AddRange(engine.Templates?.Keys.ToArray());
-            templatesGroupBox.Enabled = true;
-        }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                LoadFile(openFileDialog1.FileName);
+            ReloadUI();
         }
 
         private string StripNewlineChars(string s) => s.Replace("\r", "").Replace("\n", "").Trim();
@@ -140,6 +151,90 @@ namespace gui
         private void Log(string message)
         {
             logTextBox.Text += message + Environment.NewLine;
+        }
+
+        private bool ShowConfirmation()
+            => DialogResult.Yes == MessageBox.Show(@"Are you sure?", @"Confirmation required", MessageBoxButtons.YesNo);
+
+        private void OpenFolder(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Log("Directory does not exist.");
+                return;
+            }
+
+            var p = new Process();
+            p.StartInfo.FileName = "explorer.exe";
+            p.StartInfo.Arguments = path;
+            p.Start();
+        }
+
+        #region Editing Items
+
+        private void EditPagePart(string page, string part)
+        {
+            if (!_engine.Pages.ContainsKey(page))
+                return;
+            if (!_engine.Pages[page].ContainsKey(part))
+                _engine.Pages[page].Add(part, String.Empty);
+
+            var f = new PartEditor();
+            f.TextEditor.Text = _engine.Pages[page][part];
+            f.Text = $@"Editing page part: {page}.{part} - TengDK";
+            if (part.EndsWith("md"))
+                f.TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("MarkDown");
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                _engine.Pages[page][part] = f.TextEditor.Text;
+                if (part == "use")
+                {
+                    Log($"Template changed for page {page}. Reloading UI.");
+                    ReloadUI();
+                }
+            }
+        }
+
+        private void EditTemplate(string name)
+        {
+            if (!_engine.Templates.ContainsKey(name))
+                _engine.Templates.Add(name, "");
+
+            var f = new TemplateFrm
+            {
+                Editor = { Text = _engine.Templates[name] },
+                Format = { Text = _engine.FileFormatsDictionary.ContainsKey(name) ? _engine.FileFormatsDictionary[name] : "default" },
+                MinifyChk = { Checked = !_engine.NoMinList.Contains(name) },
+                Text = $@"Editing template: {name} - TengDK"
+            };
+
+            if (f.ShowDialog() != DialogResult.OK) return;
+
+            _engine.Templates[name] = f.Editor.Text;
+            if (_engine.FileFormatsDictionary.ContainsKey(name))
+            {
+                if (f.Format.Text == "default")
+                    _engine.FileFormatsDictionary.Remove(name);
+                else
+                    _engine.FileFormatsDictionary[name] = f.Format.Text;
+            }
+            else if (f.Format.Text != "default")
+                _engine.FileFormatsDictionary.Add(name, f.Format.Text);
+
+            if (_engine.NoMinList.Contains(name) && f.MinifyChk.Checked)
+                _engine.NoMinList.Remove(name);
+            else if (!f.MinifyChk.Checked)
+                _engine.NoMinList.Add(name);
+        }
+
+#endregion
+
+        #region Event Handlers
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                LoadFile(openFileDialog1.FileName);
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -153,7 +248,13 @@ namespace gui
                 return;
 
             pagesListBox.Items.Clear();
-            pagesListBox.Items.AddRange(engine.GetPagesUsingTemplate(templatesListBox.SelectedItem.ToString()).Keys.ToArray());
+
+            var item = templatesListBox.SelectedItem.ToString();
+            if (item == "All Pages")
+                pagesListBox.Items.AddRange(_engine.Pages.Keys.ToArray());
+            else
+                pagesListBox.Items.AddRange(_engine.GetPagesUsingTemplate(item).Keys.ToArray());
+
             pagesGroupBox.Enabled = true;
 
             pagePartsListBox.Items.Clear();
@@ -166,7 +267,7 @@ namespace gui
                 return;
 
             pagePartsListBox.Items.Clear();
-            pagePartsListBox.Items.AddRange(engine.GetPageParts(pagesListBox.SelectedItem.ToString()).Keys.ToArray());
+            pagePartsListBox.Items.AddRange(_engine.GetPageParts(pagesListBox.SelectedItem.ToString()).Keys.ToArray());
             pagePartsGroupBox.Enabled = true;
         }
 
@@ -174,7 +275,7 @@ namespace gui
         {
             button10.Enabled = false;
             Log("Generating");
-            var r = engine?.Generate();
+            var r = _engine?.Generate();
 
             if (r != null)
                 foreach (var item in r)
@@ -190,7 +291,7 @@ namespace gui
 
         private void saveToDiskNowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var r = engine?.SaveAllFiles();
+            var r = _engine?.SaveAllFiles();
             if (r == null)
                 return;
 
@@ -203,7 +304,7 @@ namespace gui
         {
             var pn = pagesListBox.SelectedItem.ToString();
             Log("Generating page: " + pn);
-            engine.ParsePageAndSave(pn);
+            _engine.ParsePageAndSave(pn);
             Log("Done");
         }
 
@@ -215,7 +316,7 @@ namespace gui
             name = name.Trim();
             name = Regex.Match(name.ToLower(), "[a-z0-9]+").Value;
 
-            if (engine.Templates.ContainsKey(name))
+            if (_engine.Templates.ContainsKey(name))
             {
                 MessageBox.Show("Name already exists.");
                 return;
@@ -227,13 +328,22 @@ namespace gui
 
         private void templatesRemBtn_Click(object sender, EventArgs e)
         {
-            if (!ShowConfirmation())
-                return;
             if (templatesListBox.SelectedIndex < 0)
                 return;
             var item = templatesListBox.SelectedItem.ToString();
+
+            if (item == "All Pages")
+                return;
+
+            if (!ShowConfirmation())
+                return;
+
             templatesListBox.Items.Remove(item);
-            engine.RemoveTemplateAndPages(item);
+
+            if (item.StartsWith("Regex: "))
+                return;
+
+            _engine.RemoveTemplateAndPages(item);
 
             pagePartsListBox.Items.Clear();
             pagePartsGroupBox.Enabled = false;
@@ -243,79 +353,61 @@ namespace gui
 
         private void templatesEditBtn_Click(object sender, EventArgs e)
         {
-            if (templatesListBox.SelectedIndex > -1)
-                EditTemplate(templatesListBox.SelectedItem.ToString());
+            if (templatesListBox.SelectedIndex == -1)
+                return;
+
+            var item = templatesListBox.SelectedItem.ToString();
+            if (item != "All Pages" || !item.StartsWith("Regex: "))
+                EditTemplate(item);
         }
-
-        private void EditTemplate(string name)
-        {
-            if (!engine.Templates.ContainsKey(name))
-                engine.Templates.Add(name, "");
-
-            var f = new TemplateFrm
-            {
-                Editor = {Text = engine.Templates[name]},
-                Format = {Text = engine.FileFormatsDictionary.ContainsKey(name)? engine.FileFormatsDictionary[name] : "default"},
-                MinifyChk = {Checked = !engine.NoMinList.Contains(name)},
-                Text = @"Editing template: " + name
-            };
-
-            if (f.ShowDialog() != DialogResult.OK) return;
-
-            engine.Templates[name] = f.Editor.Text;
-            if (engine.FileFormatsDictionary.ContainsKey(name))
-            {
-                if (f.Format.Text == "default")
-                    engine.FileFormatsDictionary.Remove(name);
-                else
-                    engine.FileFormatsDictionary[name] = f.Format.Text;
-            }
-            else if (f.Format.Text != "default")
-                engine.FileFormatsDictionary.Add(name, f.Format.Text);
-
-            if (engine.NoMinList.Contains(name) && f.MinifyChk.Checked)
-                engine.NoMinList.Remove(name);
-            else if (!f.MinifyChk.Checked)
-                engine.NoMinList.Add(name);
-        }
-
-        private bool ShowConfirmation()
-            => DialogResult.Yes == MessageBox.Show(@"Are you sure?", @"Confirmation required", MessageBoxButtons.YesNo);
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            engine?.SaveAllFiles();
+            _engine?.SaveAllFiles();
         }
 
         private void pagesAddBtn_Click(object sender, EventArgs e)
         {
+            var templ = templatesListBox.SelectedItem.ToString();
+            if (templ == "All Pages")
+            {
+                MessageBox.Show(@"Please select a template.");
+                return;
+            }
+
             var name = InputBox.Prompt("Enter name (alpanumeric only, no spaces):");
             if (name == String.Empty)
                 return;
             name = name.Trim();
             name = Regex.Match(name.ToLower(), "[a-z0-9]+").Value;
 
-            if (engine.Pages.ContainsKey(name))
+            if (_engine.Pages.ContainsKey(name))
             {
                 MessageBox.Show("Name already exists.");
                 return;
             }
 
             pagesListBox.Items.Add(name);
-            engine.Pages.Add(name, new Dictionary<string, string>());
-            engine.Pages[name].Add("use", templatesListBox.SelectedItem.ToString());
-            //EditPage(name);
+            _engine.Pages.Add(name, new Dictionary<string, string>());
+            _engine.Pages[name].Add("use", templ);
         }
 
         private void pagesRemBtn_Click(object sender, EventArgs e)
         {
-            if (!ShowConfirmation())
-                return;
             if (pagesListBox.SelectedIndex < 0)
                 return;
             var item = pagesListBox.SelectedItem.ToString();
+
+            if (item == "default")
+            {
+                MessageBox.Show("Default page cannot be deleted.");
+                return;
+            }
+
+            if (!ShowConfirmation())
+                return;
             pagesListBox.Items.Remove(item);
-            engine.RemovePage(item);
+            _engine.RemovePage(item);
 
             pagePartsListBox.Items.Clear();
             pagePartsGroupBox.Enabled = false;
@@ -330,7 +422,7 @@ namespace gui
             name = Regex.Match(name.ToLower(), "[a-z0-9]+").Value;
             var selectedPage = pagesListBox.SelectedItem.ToString();
 
-            if (engine.Pages[selectedPage].ContainsKey(name))
+            if (_engine.Pages[selectedPage].ContainsKey(name))
             {
                 MessageBox.Show("Name already exists.");
                 return;
@@ -349,23 +441,7 @@ namespace gui
 
             var item = pagePartsListBox.SelectedItem.ToString();
             pagePartsListBox.Items.Remove(item);
-            engine.RemovePagePart(pagesListBox.SelectedItem.ToString(), item);
-        }
-
-        private void EditPagePart(string page, string part)
-        {
-            if (!engine.Pages.ContainsKey(page))
-                return;
-            if (!engine.Pages[page].ContainsKey(part))
-                engine.Pages[page].Add(part, String.Empty);
-
-            var f = new PartEditor();
-            f.TextEditor.Text = engine.Pages[page][part];
-            f.Text = $@"Editing page part: {page}.{part}";
-            if (part.EndsWith("md"))
-                f.TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("MarkDown");
-            if (f.ShowDialog() == DialogResult.OK)
-                engine.Pages[page][part] = f.TextEditor.Text;
+            _engine.RemovePagePart(pagesListBox.SelectedItem.ToString(), item);
         }
 
         private void pagePartsEditBtn_Click(object sender, EventArgs e)
@@ -376,8 +452,45 @@ namespace gui
 
         private void button1_Click(object sender, EventArgs e)
         {
-            engine?.CleanOutput();
+            _engine?.CleanOutput();
         }
+
+        private void openStaticDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFolder(_engine.WorkingDirectory + "static" + Path.DirectorySeparatorChar);
+        }
+
+        private void openOutputDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFolder(_engine.OutputDirectory);
+        }
+
+        private void testPageRegexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f = new PageRegexTestFrm(_engine);
+            f.ShowDialog();
+        }
+
+        private void archiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (archiveSaveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            Log("Beginning archive");
+            saveToDiskNowToolStripMenuItem_Click(null, null);
+            try
+            {
+                System.IO.Compression.ZipFile.CreateFromDirectory(_engine.WorkingDirectory, archiveSaveFileDialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                Log("Error saving archive:\r\n" + ex.Message);
+                return;
+            }
+            Log("Done");
+        }
+
+#endregion
     }
 
     public static class Extensions

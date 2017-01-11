@@ -1,6 +1,6 @@
 ﻿namespace gui
 {
-    partial class Form1
+    partial class MainFrm
     {
         /// <summary>
         /// Required designer variable.
@@ -63,6 +63,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.archiveSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.templatesGroupBox.SuspendLayout();
             this.pagesGroupBox.SuspendLayout();
@@ -136,6 +137,7 @@
             this.archiveToolStripMenuItem,
             this.testPageRegexToolStripMenuItem,
             this.saveToDiskNowToolStripMenuItem});
+            this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -156,31 +158,31 @@
             // 
             // openStaticDirectoryToolStripMenuItem
             // 
-            this.openStaticDirectoryToolStripMenuItem.Enabled = false;
             this.openStaticDirectoryToolStripMenuItem.Name = "openStaticDirectoryToolStripMenuItem";
             this.openStaticDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.openStaticDirectoryToolStripMenuItem.Text = "Open &static directory";
+            this.openStaticDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openStaticDirectoryToolStripMenuItem_Click);
             // 
             // openOutputDirectoryToolStripMenuItem
             // 
-            this.openOutputDirectoryToolStripMenuItem.Enabled = false;
             this.openOutputDirectoryToolStripMenuItem.Name = "openOutputDirectoryToolStripMenuItem";
             this.openOutputDirectoryToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.openOutputDirectoryToolStripMenuItem.Text = "Open &output directory";
+            this.openOutputDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openOutputDirectoryToolStripMenuItem_Click);
             // 
             // archiveToolStripMenuItem
             // 
-            this.archiveToolStripMenuItem.Enabled = false;
             this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
             this.archiveToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.archiveToolStripMenuItem.Text = "&Archive";
+            this.archiveToolStripMenuItem.Click += new System.EventHandler(this.archiveToolStripMenuItem_Click);
             // 
             // testPageRegexToolStripMenuItem
             // 
-            this.testPageRegexToolStripMenuItem.Enabled = false;
             this.testPageRegexToolStripMenuItem.Name = "testPageRegexToolStripMenuItem";
             this.testPageRegexToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.testPageRegexToolStripMenuItem.Text = "&Test page Regex";
+            this.testPageRegexToolStripMenuItem.Click += new System.EventHandler(this.testPageRegexToolStripMenuItem_Click);
             // 
             // saveToDiskNowToolStripMenuItem
             // 
@@ -393,7 +395,11 @@
             this.openFileDialog1.FileName = "project.teng";
             this.openFileDialog1.Filter = "Teng project files (project.teng)|project.teng|All files (*.*)|*.*";
             // 
-            // Form1
+            // archiveSaveFileDialog
+            // 
+            this.archiveSaveFileDialog.Filter = "Zip archives (*.zip)|*.zip|All files (*.*)|*.*";
+            // 
+            // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -407,7 +413,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainFrm";
             this.Text = "TengDK";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
@@ -458,6 +464,7 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.SaveFileDialog archiveSaveFileDialog;
     }
 }
 
