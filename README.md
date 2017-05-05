@@ -1,10 +1,10 @@
-#Teng - Template ENGine with Markdown and minify support
+ # Teng - Template ENGine with Markdown and minify support
 
 [Sample website](https://servc.eu/p/teng-sample/index.html)
 
 [Download the latest release](https://github.com/SERVCUBED/Teng/releases)
 
-##teng.exe usage:
+## teng.exe usage:
 	-generate -g -gen    Generate output from templates
     -output=<value>      Set the output directory. Default is ./output/
     -dir=<value>         Set the working directory. Default is ./
@@ -12,14 +12,14 @@
     -singlethread        Disable multithreading. Use on single-core machines
     <filename>           Loads values from a project file. Use other values after to overwrite ones in this file.
 
-##Tips:
+## Tips:
 *	Run Associate.bat as an administrator to register any .teng file with ./teng.exe. CLI current directory must 
 	contain teng.exe and all its dependencies
 *   When using mixed markdown (type: pagemd) and html (type: page) pages, create empty pages/default.body and 
     pages/default.bodymd to avoid not found errors
 
 
-##Compile order:
+## Compile order:
 *	For each page:
 	*	Load page.use if exists (if not, default.use. If that not exists, fail)
 	*	Parse template file, loading page content from {{t page.asdf}} -> \<pagename\>.asdf -> default.asdf where exists
@@ -28,7 +28,7 @@
 	*	Copy to \<pagename\>.format in output directory
 *	Copy all .project 'copy' values where exists
 
-##fileformats
+## fileformats
 Optional file. Include this to set custom file formats for each template. The format is `<template name>:<format>`. 
 Use `%n` in place of where the page name should go in the format. If `%n` is not present, the line will be rejected and template generation 
 will fail. `:nomin` can be appended to each line to prevent the output being minified.
@@ -42,7 +42,7 @@ If there is no fileformats file, the following contents is assumed:
 
     default:%n.html
 
-##project.teng
+## project.teng
 Optional file.
 
 e.g.
@@ -51,7 +51,7 @@ e.g.
 	Generate?
 	Clean?
 
-##incfile - **Not implemented yet.**
+## incfile - **Not implemented yet.**
 Optional file.
 Contains links to other content
 Append 'nomin' to not automatically minify js/css file
@@ -59,7 +59,7 @@ e.g.:
 
 	js.nomin git jmin/jmin.min.js js/jmin.min.js
 
-##templates/main
+## templates/main
 Main template file. Required file.
 
 e.g.
@@ -80,7 +80,7 @@ e.g.
 		</body>
 	</html>
 
-##templates/menu
+## templates/menu
 Another example template to show inclusion and menu system.
 
 e.g.
@@ -92,33 +92,33 @@ e.g.
 		{{t endforeach}}
 	</ul>
 
-##pages/default.use
+## pages/default.use
 The template used for the default page
 
 e.g.
 
 	main
 
-##pages/default.title
+## pages/default.title
 The {{t page.title}} object for the default page.
 
 e.g.
 
 	Page Title
 
-##pages/default.body
+## pages/default.body
 The {{t page.body}} object for the default page.
 
 e.g.
 
 	<h1>This is the default content</h1>
 
-##pages/index.title
+## pages/index.title
 e.g.
 
 	Main Page
 
-##pages/index.body
+## pages/index.body
 The body content. Can contain all php/js/css.
 e.g.
 
