@@ -302,6 +302,9 @@ namespace gui
 
         private void pageGenerateBtn_Click(object sender, EventArgs e)
         {
+            if (pagesListBox.SelectedIndex < 0)
+                return;
+
             var pn = pagesListBox.SelectedItem.ToString();
             Log("Generating page: " + pn);
             _engine.ParsePageAndSave(pn);
