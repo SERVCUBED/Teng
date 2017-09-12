@@ -28,7 +28,7 @@ namespace TemplateEngine
         /// <returns>A list of all matching pages.</returns>
         public List<string> GetPageNamesMatchRegex(string regex, bool isOrdered)
         {
-            var pages = isOrdered ? Pages.OrderBy(p => GetPageOrder(p.Value)).ToList() : Pages.ToList();
+            var pages = isOrdered ? Pages.Where(p => p.Value.ContainsKey("order")).OrderBy(p => GetPageOrder(p.Value)).ToList() : Pages.ToList();
             
             return (from page in pages
                 where (page.Key != "default" && Regex.IsMatch(page.Key, regex))
