@@ -179,6 +179,12 @@ namespace gui
             if (!_engine.Pages[page].ContainsKey(part))
                 _engine.Pages[page].Add(part, String.Empty);
 
+            if (part == "order")
+            {
+                _engine.Pages[page][part] = OrderNumberEditor.Show(_engine.Pages[page][part]);
+                return;
+            }
+
             var f = new PartEditor();
             f.TextEditor.Text = _engine.Pages[page][part];
             f.Text = $@"Editing page part: {page}.{part} - TengDK";

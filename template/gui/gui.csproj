@@ -73,6 +73,12 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="MyCompletionData.cs" />
+    <Compile Include="OrderNumberEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrderNumberEditor.Designer.cs">
+      <DependentUpon>OrderNumberEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="PageRegexTestFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderNumberEditor.resx">
+      <DependentUpon>OrderNumberEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PageRegexTestFrm.resx">
       <DependentUpon>PageRegexTestFrm.cs</DependentUpon>
