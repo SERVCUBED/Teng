@@ -9,14 +9,14 @@ namespace TemplateEngine
     {
         private string ParseMenuForeach(string templateData, string pageName)
         {
-            var foreachpattern = @"\{\{t foreach page \/(.+)\/\}\}((?:.|\n)+)\{\{t endforeach\}\}";
+            var foreachpattern = @"\{\{t foreach (ordered|)page \/(.+)\/\}\}((?:.|\n)+)\{\{t endforeach\}\}";
             return Regex.Replace(templateData, foreachpattern, m => ParseForeachTemplateRegex(m, pageName), RegexOptions.ECMAScript);
         }
 
         private string ParseForeachTemplateRegex(Match m, string pageName)
         {
-            var pages = GetPageNamesMatchRegex(m.Groups[1].Value);
-            var o = pages.Aggregate("", (current, page) => current + ParseForeachTemplateData(m.Groups[2].Value, page, pageName));
+            var pages = GetPageNamesMatchRegex(m.Groups[2].Value, m.Groups[1].Value == "ordered");
+            var o = pages.Aggregate("", (current, page) => current + ParseForeachTemplateData(m.Groups[3].Value, page, pageName));
 
             return o;
         }
@@ -26,8 +26,21 @@ namespace TemplateEngine
         /// </summary>
         /// <param name="regex">The Regex to match to.</param>
         /// <returns>A list of all matching pages.</returns>
-        public List<string> GetPageNamesMatchRegex(string regex) =>
-            (from page in Pages where (page.Key != "default" && Regex.IsMatch(page.Key, regex)) select page.Key).ToList();
+        public List<string> GetPageNamesMatchRegex(string regex, bool isOrdered)
+        {
+            var pages = isOrdered ? Pages.OrderBy(p => GetPageOrder(p.Value)).ToList() : Pages.ToList();
+            
+            return (from page in pages
+                where (page.Key != "default" && Regex.IsMatch(page.Key, regex))
+                select page.Key).ToList();
+        }
+
+        private int GetPageOrder(Dictionary<string, string> page)
+        {
+            int i;
+            int.TryParse(page["order"], out i);
+            return i;
+        }
 
         private string ParseForeachTemplateData(string data, string pageName, string activePage)
         {
