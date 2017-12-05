@@ -188,8 +188,10 @@ namespace gui
             var f = new PartEditor();
             f.TextEditor.Text = _engine.Pages[page][part];
             f.Text = $@"Editing page part: {page}.{part} - TengDK";
+#if !Linux
             if (part.EndsWith("md"))
                 f.TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("MarkDown");
+#endif
             if (f.ShowDialog() == DialogResult.OK)
             {
                 _engine.Pages[page][part] = f.TextEditor.Text;
@@ -235,7 +237,7 @@ namespace gui
 
 #endregion
 
-        #region Event Handlers
+#region Event Handlers
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {

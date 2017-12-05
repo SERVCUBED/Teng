@@ -1,4 +1,6 @@
-﻿namespace gui
+﻿using System.Windows.Forms;
+
+namespace gui
 {
     partial class TemplateFrm
     {
@@ -34,8 +36,11 @@
             this.MinifyChk = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+#if Linux
+            this.elementHost1 = new System.Windows.Forms.TextBox();
+#else
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.editor1 = new gui.Editor();
+#endif
             this.SuspendLayout();
             // 
             // label1
@@ -108,8 +113,12 @@
             this.elementHost1.Name = "elementHost1";
             this.elementHost1.Size = new System.Drawing.Size(557, 259);
             this.elementHost1.TabIndex = 7;
-            this.elementHost1.Text = "elementHost1";
+#if Linux
+            this.elementHost1.Multiline = true;
+            this.elementHost1.ScrollBars = ScrollBars.Both;
+#else
             this.elementHost1.Child = this.editor1;
+#endif
             // 
             // TemplateFrm
             // 
@@ -131,7 +140,7 @@
 
         }
 
-        #endregion
+#endregion
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
@@ -139,7 +148,10 @@
         private System.Windows.Forms.Button button3;
         internal System.Windows.Forms.TextBox Format;
         internal System.Windows.Forms.CheckBox MinifyChk;
+#if Linux
+        private System.Windows.Forms.TextBox elementHost1;
+#else
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private Editor editor1;
+#endif
     }
 }

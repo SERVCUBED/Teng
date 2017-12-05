@@ -7,7 +7,12 @@ namespace gui
     public partial class TemplateFrm : Form
     {
 
+#if Linux
+        public TextBox Editor => elementHost1; // as TextBox
+#else
         public TextEditor Editor => (elementHost1.Child as Editor)?.textEditor;
+#endif
+
         public TemplateFrm()
         {
             InitializeComponent();

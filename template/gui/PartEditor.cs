@@ -6,7 +6,12 @@ namespace gui
 {
     public partial class PartEditor : Form
     {
+
+#if Linux
+        public TextBox TextEditor => elementHost1; // as TextBox
+#else
         public TextEditor TextEditor => (elementHost1.Child as Editor)?.textEditor;
+#endif
 
         public PartEditor()
         {
