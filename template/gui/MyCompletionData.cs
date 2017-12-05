@@ -1,5 +1,4 @@
-﻿#if !Linux
-using System;
+﻿using System;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
@@ -40,4 +39,3 @@ namespace gui
         }
     }
 }
-#endif

@@ -69,7 +69,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Editor.xaml.cs">
+    <Compile Include="Editor.xaml.cs" Condition="'$(Configuration)' != 'Linux'">
       <DependentUpon>Editor.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainFrm.cs">
@@ -84,7 +84,7 @@
     <Compile Include="InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyCompletionData.cs" />
+    <Compile Include="MyCompletionData.cs" Condition="'$(Configuration)' != 'Linux'" />
     <Compile Include="OrderNumberEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,10 +162,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Editor.xaml">
+    <Page Include="Editor.xaml" Condition="'$(Configuration)' != 'Linux'">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </None>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
