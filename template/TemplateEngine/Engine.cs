@@ -55,7 +55,7 @@ namespace TemplateEngine
 
             if (!Directory.Exists(WorkingDirectory))
             {
-                return "Working directory must exist";
+                return $"Working directory {WorkingDirectory} must exist";
             }
 
             return null;

@@ -47,12 +47,14 @@ namespace templategen
                             if (split.Length >= 3)
                             {
                                 workingDirectory = arg.Substring(0, arg.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                                if (workingDirectory == String.Empty)
+                                    workingDirectory = ".".AddDirectorySeparatorChar();
 
                                 var path = split[0].Replace('\r', '\\');
                                 if (Path.IsPathRooted(path))
-                                    outputDirectory = path;
+                                    outputDirectory = path.AddDirectorySeparatorChar();
                                 else
-                                    outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path;
+                                    outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path.AddDirectorySeparatorChar();
                                 shouldGen = split[1].Contains("True");
                                 shouldCleanOutput = split[2].Contains("True");
                             }

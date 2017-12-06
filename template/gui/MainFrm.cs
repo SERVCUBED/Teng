@@ -77,12 +77,14 @@ namespace gui
                 if (split.Length >= 3)
                 {
                     workingDirectory = filePath.Substring(0, filePath.LastIndexOf(Path.DirectorySeparatorChar) + 1);
+                    if (workingDirectory == String.Empty)
+                        workingDirectory = ".".AddDirectorySeparatorChar();
 
                     var path = split[0].Replace('\r', '\\');
                     if (Path.IsPathRooted(path))
                         outputDirectory = path;
                     else
-                        outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path;
+                        outputDirectory = workingDirectory.AddDirectorySeparatorChar() + path.AddDirectorySeparatorChar();
                     //shouldGen = split[1].Contains("True");
                     //shouldCleanOutput = split[2].Contains("True");
                 }
