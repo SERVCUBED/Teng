@@ -40,6 +40,7 @@ namespace gui
             this.elementHost1 = new System.Windows.Forms.TextBox();
 #else
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.editor1 = new gui.Editor();
 #endif
             this.SuspendLayout();
             // 
@@ -152,6 +153,7 @@ namespace gui
         private System.Windows.Forms.TextBox elementHost1;
 #else
         private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private Editor editor1;
 #endif
     }
 }
