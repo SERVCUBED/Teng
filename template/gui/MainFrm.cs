@@ -239,7 +239,7 @@ namespace gui
 
 #endregion
 
-#region Event Handlers
+        #region Event Handlers
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {

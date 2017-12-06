@@ -1,4 +1,5 @@
-"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe template\template.sln /property:Config=Debug+Release+Linux"
+& "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe" "template\template.sln" "/property:Configuration=Release"
+& "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe" "template\template.sln" "/property:Configuration=Linux"
 
 rm -R .\release\
 
