@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+#if !Linux
 using ICSharpCode.AvalonEdit.Highlighting;
+#endif
 using TemplateEngine;
 
 namespace gui
@@ -148,14 +150,14 @@ namespace gui
             ReloadUI();
         }
 
-        private string StripNewlineChars(string s) => s.Replace("\r", "").Replace("\n", "").Trim();
+        private static string StripNewlineChars(string s) => s.Replace("\r", "").Replace("\n", "").Trim();
 
         private void Log(string message)
         {
             logTextBox.Text += message + Environment.NewLine;
         }
 
-        private bool ShowConfirmation()
+        private static bool ShowConfirmation()
             => DialogResult.Yes == MessageBox.Show(@"Are you sure?", @"Confirmation required", MessageBoxButtons.YesNo);
 
         private void OpenFolder(string path)
@@ -166,9 +168,14 @@ namespace gui
                 return;
             }
 
-            var p = new Process();
-            p.StartInfo.FileName = "explorer.exe";
-            p.StartInfo.Arguments = path;
+            var p = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer.exe",
+                    Arguments = path
+                }
+            };
             p.Start();
         }
 
@@ -233,7 +240,7 @@ namespace gui
 
             if (_engine.NoMinList.Contains(name) && f.MinifyChk.Checked)
                 _engine.NoMinList.Remove(name);
-            else if (!f.MinifyChk.Checked)
+            else if (!f.MinifyChk.Checked && !_engine.NoMinList.Contains(name))
                 _engine.NoMinList.Add(name);
         }
 

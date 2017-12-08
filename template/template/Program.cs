@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using TemplateEngine;
 
@@ -138,7 +137,7 @@ namespace templategen
                     Console.WriteLine("Done!");
                 }
 #if DEBUG
-                if (!Debugger.IsAttached) return;
+                if (!System.Diagnostics.Debugger.IsAttached) return;
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(">> Press any key");

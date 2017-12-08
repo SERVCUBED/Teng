@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+#if !Linux
 using ICSharpCode.AvalonEdit;
+#endif
 
 namespace gui
 {

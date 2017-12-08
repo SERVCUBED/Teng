@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using NUglify;
 
 namespace TemplateEngine
@@ -16,7 +14,7 @@ namespace TemplateEngine
         public readonly Dictionary<string, string> FileFormatsDictionary;
         public readonly List<string> NoMinList;
         public readonly Dictionary<string, string> Templates = new Dictionary<string, string>(); // name, value
-        private readonly bool _useMultipleThreads;
+        //private readonly bool _useMultipleThreads;
         private List<string> _warnings = new List<string>();
         private ThreadManager _threadManager;
 
@@ -29,7 +27,7 @@ namespace TemplateEngine
             OutputDirectory = outputdirectory;
             WorkingDirectory = workingDirectory;
             NoMinList = noMin1;
-            _useMultipleThreads = useMultipleThreads;
+            //_useMultipleThreads = useMultipleThreads;
             FileFormatsDictionary = fileFormatsDictionary;
             if (!FileFormatsDictionary.ContainsKey("default"))
                 FileFormatsDictionary.Add("default", "%n.html"); // Add default item
@@ -330,14 +328,8 @@ namespace TemplateEngine
             if (!Templates.ContainsKey(templateName))
                 return;
 
-            List<string> toRemove = new List<string>();
-            foreach (var page in Pages)
-            {
-                if (!(page.Value.ContainsKey("use") && page.Value["use"] == templateName))
-                    continue;
-
-                toRemove.Add(page.Key);
-            }
+            var toRemove = (from page in Pages where page.Value.ContainsKey("use") && 
+                            page.Value["use"] == templateName select page.Key).ToList();
 
             foreach(var page in toRemove)
                 RemovePage(page);

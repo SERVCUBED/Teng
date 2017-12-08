@@ -19,8 +19,7 @@ namespace gui
             };
             if (f.ShowDialog() == DialogResult.OK)
                 return f.textBox1.Text;
-            else
-                return defaultContent;
+            return defaultContent;
         }
 
         private void button1_Click(object sender, EventArgs e)
